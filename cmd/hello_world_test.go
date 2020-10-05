@@ -6,6 +6,6 @@ import (
 )
 
 func TestHelloWorld(t *testing.T){
-	s := "Hello world"
-	assert.Equal(t,s, "Hello world", "The two phrases should be the same")
+	s := helloWorld()
+	assert.Equal(t,"Hello world", s, "The two phrases should be the same")
 }

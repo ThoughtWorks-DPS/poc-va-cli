@@ -18,6 +18,7 @@ var printCmd = &cobra.Command{
 	},
 }
 
-func helloWorld() {
+func helloWorld() string {
 	fmt.Println("Hello world")
+	return "Hello world"
 }
