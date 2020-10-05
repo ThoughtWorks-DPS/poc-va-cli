@@ -44,7 +44,6 @@ jobs:
       - run: go test ./...
 
 workflows:
-  version: 1
   build_and_test:
     jobs:
       -build
