@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
@@ -15,7 +15,6 @@ jobs:
       - run: go test ./...
 
 workflows:
-  version: 2
   build_and_test:
     jobs:
       - build
