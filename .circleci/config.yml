@@ -27,7 +27,7 @@ workflows:
     jobs:
       - build
       - test
-  release:
+  publish_release:
     jobs:
       - release:
           filters:
