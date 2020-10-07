@@ -22,7 +22,7 @@ jobs:
     docker:
       - image: cimg/go:1.15.2
     environment:
-      GITHUB_TOKEN: secrethub://vapoc/platform/svc/github/access-token-punit
+      GITHUB_TOKEN: secrethub://vapoc/platform/svc/github/access-token
     steps:
       - checkout
       - secrethub/exec:
