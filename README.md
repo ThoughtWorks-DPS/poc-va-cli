@@ -9,3 +9,6 @@
 > go test
 5. Run all test files recursively
 > go test ./...
+6. Publishing builds
+Install goreleaser
+> brew install goreleaser
