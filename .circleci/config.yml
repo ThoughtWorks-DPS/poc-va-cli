@@ -1,4 +1,8 @@
 version: 2.1
+
+orbs:
+  secrethub: secrethub/cli@1.0.0
+
 jobs:
   build:
     docker:
@@ -16,11 +20,14 @@ jobs:
 
   release:
     docker:
-      - image: circleci/golang:1.15
+      - image: cimg/base:stable
+    environment:
+      GITHUB_TOKEN: secrethub://vapoc/platform/svc/github/access-token
     steps:
       - checkout
-      - run: secrethub run --env-file secrethub.env -- /bin/sh -eo pipefail
-      - run: curl -sL https://git.io/goreleaser | bash
+      - secrethub/exec:
+          step-name: Publish Release
+          command: curl -sL https://git.io/goreleaser | bash
 
 workflows:
   version: 2
