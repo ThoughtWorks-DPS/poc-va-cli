@@ -20,7 +20,7 @@ jobs:
 
   release:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/go:1.15.2
     environment:
       GITHUB_TOKEN: secrethub://vapoc/platform/svc/github/access-token
     steps:
