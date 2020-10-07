@@ -35,8 +35,6 @@ workflows:
     jobs:
       - build
       - test
-  main:
-    jobs:
       - release:
           # Only run this job on git tag pushes
           requires:
