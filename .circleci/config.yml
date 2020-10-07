@@ -3,24 +3,26 @@ version: 2.1
 orbs:
   secrethub: secrethub/cli@1.0.0
 
-jobs:
-  build:
+executors:
+  go-agent:
     docker:
       - image: cimg/go:1.15.2
+
+jobs:
+  build:
+    executor: go-agent
     steps:
       - checkout
       - run: go run main.go
 
   test:
-    docker:
-      - image: cimg/go:1.15.2
+    executor: go-agent
     steps:
       - checkout
       - run: go test ./...
 
   release:
-    docker:
-      - image: cimg/go:1.15.2
+    executor: go-agent
     environment:
       GITHUB_TOKEN: secrethub://vapoc/platform/svc/github/access-token
     steps:
