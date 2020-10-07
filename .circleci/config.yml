@@ -14,9 +14,24 @@ jobs:
       - checkout
       - run: go test ./...
 
+  release:
+    docker:
+      - image: cimg/go:1.15.2
+    steps:
+      - checkout
+      - run: curl -sL https://git.io/goreleaser | bash
+
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build
       - test
+  release:
+    job:
+      - release:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*(-.*)*
