@@ -23,9 +23,11 @@ jobs:
 
   tag:
     machine: true
+    environment:
+      GITHUB_TOKEN: secrethub://vapoc/platform/svc/github/access-token
     steps:
       - checkout
-      - run:
+      - secrethub/exec:
           command: |
             current_version=$(git describe --abbrev=0 | tr -d 'v')
             new_version=$(docker run --rm alpine/semver semver -c -i patch $current_version)
