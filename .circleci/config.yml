@@ -26,3 +26,45 @@ jobs:
     steps:
       - checkout
       - run: docker run --rm alpine/semver semver -c -i minor 1.0.2
+
+  release:
+    executor: go-agent
+    environment:
+      GITHUB_TOKEN: secrethub://vapoc/platform/svc/github/access-token
+    steps:
+      - checkout
+      - secrethub/exec:
+          step-name: Publish Release
+          command: curl -sL https://git.io/goreleaser | bash
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test
+      - tag
+  main:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
+      - test:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
+      - release:
+          context: dps-va-di
+          requires:
+            - build
+            - test
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
