@@ -25,9 +25,10 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: current_version=$(git describe --abbrev=0 | tr -d 'v')
-      - run: docker run --rm alpine/semver semver -c -i minor $current_version
-
+      - run:
+          command: |
+            current_version=$(git describe --abbrev=0 | tr -d 'v')
+            docker run --rm alpine/semver semver -c -i minor $current_version
 
   release:
     executor: go-agent
