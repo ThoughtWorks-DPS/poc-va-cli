@@ -28,7 +28,11 @@ jobs:
     steps:
       - checkout
       - secrethub/exec:
-          command: curl -sL https://git.io/goreleaser | bash
+          command: |
+            current_version=$(git describe --abbrev=0 | tr -d 'v')
+            new_version=$(docker run --rm alpine/semver semver -c -i patch $current_version)
+            git tag -a $new_version -m "${new_version}"
+            git push origin "v${new_version}"
 
   release:
     executor: go-agent
@@ -71,3 +75,5 @@ workflows:
               ignore: /.*/
             tags:
               only: /v[0-9]+(\.[0-9]+)*(-.*)*/
+      - tag:
+          context: dps-va-di
