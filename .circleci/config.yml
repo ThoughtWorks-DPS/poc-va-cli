@@ -25,15 +25,12 @@ jobs:
     machine: true
     steps:
       - checkout
-      - secrethub/exec:
-          command: |
-            current_version=$(git describe --abbrev=0 | tr -d 'v')
-            new_version=$(docker run --rm alpine/semver semver -c -i patch $current_version)
-            echo $new_version
-            git config --global user.email "rilau@thoughtworks.com"
-            git config --global user.name "Rich Lau"
-            git tag -a "v${new_version}" -m "v${new_version}"
-            git push origin master "v${new_version}"
+      - run: |
+          current_version=$(git describe --abbrev=0 | tr -d 'v')
+          new_version=$(docker run --rm alpine/semver semver -c -i patch $current_version)
+          echo $new_version
+          git tag -a "v${new_version}" -m "v${new_version}"
+          git push origin master "v${new_version}"
 
   release:
     executor: go-agent
@@ -51,29 +48,15 @@ workflows:
     jobs:
       - build
       - test
-  main:
+  tag_and_release:
     jobs:
-      - build:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
-      - test:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
       - release:
           context: dps-va-di
           requires:
-            - build
-            - test
+            - tag
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /v[0-9]+(\.[0-9]+)*(-.*)*/
-      - tag:
-          context: dps-va-di
+      - tag
