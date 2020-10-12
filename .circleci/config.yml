@@ -49,10 +49,14 @@ workflows:
     jobs:
       - build
       - test
+      - hold:
+          type: approval
+          requires:
+            - build
+            - test
       - tag:
           requires:
-            - test
-            - build
+            - hold
       - release:
           context: dps-va-di
           requires:
