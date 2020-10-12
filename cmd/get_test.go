@@ -8,5 +8,5 @@ import (
 func TestHelloWorld(t *testing.T){
 	s := get()
 
-	assert.Equal(t, "2001 OK", s, "Status code should equal 200 OK" )
+	assert.Equal(t, "200 OK", s, "Status code should equal 200 OK" )
 }
