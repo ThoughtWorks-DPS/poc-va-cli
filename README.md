@@ -12,3 +12,4 @@
 6. Publishing builds
 Install goreleaser
 > brew install goreleaser
+> test
