@@ -35,7 +35,7 @@ jobs:
             echo $new_version
             git config --global user.email "rilau@thoughtworks.com"
             git config --global user.name "Rich Lau"
-            git tag -a $new_version -m "${new_version}"
+            git tag -a "v${new_version}" -m "v${new_version}"
             git push origin master "v${new_version}"
 
   release:
