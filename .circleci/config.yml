@@ -7,9 +7,6 @@ executors:
   go-agent:
     docker:
       - image: cimg/go:1.15.2
-  node-agent:
-    docker:
-      - image: cimg/node:14.13.1
 
 jobs:
   build:
@@ -25,21 +22,21 @@ jobs:
       - run: go test ./...
 
   tag:
-    executor: node-agent
-    environment:
-      GITHUB_TOKEN: secrethub://vapoc/platform/svc/github/access-token-rich
+    machine: true
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - secrethub://vapoc/platform/svc/github/ssh-rich
       - secrethub/exec:
           command: |
-            sudo npm install -g semver@5.5.0
             current_version=$(git describe --abbrev=0 | tr -d 'v')
-            new_version=$(semver -c -i patch $current_version)
+            new_version=$(docker run --rm alpine/semver semver -c -i patch $current_version)
             echo $new_version
             git config --global user.email "rilau@thoughtworks.com"
             git config --global user.name "Rich Lau"
             git tag -a $new_version -m "${new_version}"
-            git push origin "v${new_version}"
+            git push origin master "v${new_version}"
 
   release:
     executor: go-agent
