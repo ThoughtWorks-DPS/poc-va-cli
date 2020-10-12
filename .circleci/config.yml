@@ -28,7 +28,8 @@ jobs:
       - run: |
           current_version=$(git describe --abbrev=0 | tr -d 'v')
           new_version=$(docker run --rm alpine/semver semver -c -i patch $current_version)
-          echo $new_version
+          git config --global user.email "rilau@thoughtworks.com"
+          git config --global user.name "Rich Lau"
           git tag -a "v${new_version}" -m "v${new_version}"
           git push origin master "v${new_version}"
 
