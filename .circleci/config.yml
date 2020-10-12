@@ -59,8 +59,6 @@ workflows:
             - hold
       - release:
           context: dps-va-di
-          requires:
-            - tag
           filters:
             branches:
               ignore: /.*/
