@@ -25,6 +25,9 @@ jobs:
     machine: true
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "48:34:f1:e3:cb:c7:fa:40:cc:70:9f:62:f4:95:10:cb"
       - run: |
           current_version=$(git describe --abbrev=0 | tr -d 'v')
           new_version=$(docker run --rm alpine/semver semver -c -i patch $current_version)
