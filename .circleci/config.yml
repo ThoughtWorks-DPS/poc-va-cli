@@ -9,6 +9,13 @@ executors:
       - image: cimg/go:1.15.2
 
 jobs:
+  talisman:
+    executor: go-agent
+    steps:
+      - run: |
+          curl --silent  https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash > /tmp/install_talisman.bash && /bin/bash /tmp/install_talisman.bash
+          talisman --scan
+
   build:
     executor: go-agent
     steps:
@@ -50,6 +57,7 @@ workflows:
   version: 2
   main:
     jobs:
+      - talisman
       - build
       - test
       - hold:
