@@ -12,11 +12,11 @@ jobs:
   talisman:
     executor: go-agent
     steps:
+      - checkout
       - run: |
           curl https://thoughtworks.github.io/talisman/install.sh > ~/install-talisman.sh
           chmod +x ~/install-talisman.sh
           ~/install-talisman.sh
-          talisman --scan
 
   build:
     executor: go-agent
