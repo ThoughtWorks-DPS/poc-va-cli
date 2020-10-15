@@ -14,8 +14,8 @@ jobs:
     steps:
       - checkout
       - run: |
-          mkdir ~./talisman
-          cd ~./talisman
+          mkdir ~/.talisman
+          cd ~/.talisman
           curl -L -O https://github.com/thoughtworks/talisman/releases/download/v1.3.0/talisman_linux_386
           chmod +x talisman_linux_386
           ~/.talisman/talisman_linux_386 --scan.
