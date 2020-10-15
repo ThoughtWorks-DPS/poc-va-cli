@@ -18,6 +18,7 @@ jobs:
           cd ~/.talisman
           curl -L -O https://github.com/thoughtworks/talisman/releases/download/v1.3.0/talisman_linux_386
           chmod +x talisman_linux_386
+          cd ~/project
           ~/.talisman/talisman_linux_386 --scan
 
   build:
