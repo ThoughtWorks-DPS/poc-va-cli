@@ -14,10 +14,11 @@ jobs:
     steps:
       - checkout
       - run: |
-          echo "export TALISMAN_INTERACTIVE=true" >> ~/.bashrc
-          source ~/.bashrc
-          curl --silent  https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash > /tmp/install_talisman.bash && /bin/bash /tmp/install_talisman.bash
-          talisman --scan
+          mkdir ~./talisman
+          cd ~./talisman
+          curl -L -O https://github.com/thoughtworks/talisman/releases/download/v1.3.0/talisman_linux_386
+          chmod +x talisman_linux_386
+          ~/.talisman/talisman_linux_386 --scan.
 
   build:
     executor: go-agent
