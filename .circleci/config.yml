@@ -14,9 +14,8 @@ jobs:
     steps:
       - checkout
       - run: |
-          curl https://thoughtworks.github.io/talisman/install.sh > ~/install-talisman.sh
-          chmod +x ~/install-talisman.sh
-          ~/install-talisman.sh
+          curl --silent  https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash > /tmp/install_talisman.bash && /bin/bash /tmp/install_talisman.bash
+
 
   build:
     executor: go-agent
