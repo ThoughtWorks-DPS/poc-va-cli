@@ -18,7 +18,7 @@ jobs:
           cd ~/.talisman
           curl -L -O https://github.com/thoughtworks/talisman/releases/download/v1.3.0/talisman_linux_386
           chmod +x talisman_linux_386
-          ~/.talisman/talisman_linux_386 --scan.
+          ~/.talisman/talisman_linux_386 --scan
 
   build:
     executor: go-agent
@@ -69,6 +69,7 @@ workflows:
           requires:
             - build
             - test
+            - talisman
       - tag:
           requires:
             - hold
