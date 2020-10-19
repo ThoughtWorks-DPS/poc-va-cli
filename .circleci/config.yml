@@ -19,7 +19,6 @@ jobs:
           ./git-secrets --add-provider -- cat secrets-pattern.txt
           ./git-secrets --add --allowed 'secrets-pattern.txt:.*'
           ./git-secrets --scan
-          ./git-secrets --scan-history
 
   build:
     executor: go-agent
