@@ -17,6 +17,7 @@ jobs:
           curl -sL https://raw.githubusercontent.com/awslabs/git-secrets/master/git-secrets >> git-secrets
           chmod +x git-secrets
           ./git-secrets --add-provider -- cat secrets-pattern.txt
+          ./git-secrets --add --allowed 'secrets-pattern.txt:.*'
           ./git-secrets --scan
           ./git-secrets --scan-history
 
