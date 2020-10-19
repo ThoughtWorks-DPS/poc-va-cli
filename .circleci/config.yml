@@ -67,9 +67,9 @@ workflows:
       - hold:
           type: approval
           requires:
+            - check-for-secrets
             - build
             - test
-            - git-secrets
       - tag:
           requires:
             - hold
