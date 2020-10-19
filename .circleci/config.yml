@@ -9,7 +9,7 @@ executors:
       - image: cimg/go:1.15.2
 
 jobs:
-  git-secrets:
+  check-for-secrets:
     executor: go-agent
     steps:
       - checkout
@@ -61,7 +61,7 @@ workflows:
   version: 2
   main:
     jobs:
-      - git-secrets
+      - check-for-secrets
       - build
       - test
       - hold:
