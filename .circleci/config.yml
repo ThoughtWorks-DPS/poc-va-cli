@@ -9,17 +9,14 @@ executors:
       - image: cimg/go:1.15.2
 
 jobs:
-  talisman:
+  git-secrets:
     executor: go-agent
     steps:
       - checkout
       - run: |
-          mkdir ~/.talisman
-          cd ~/.talisman
-          curl -L -O https://github.com/thoughtworks/talisman/releases/download/v1.3.0/talisman_linux_386
-          chmod +x talisman_linux_386
-          cd ~/project
-          ~/.talisman/talisman_linux_386 --scan
+          ./git-secrets --add-provider -- cat secrets-pattern.txt
+          ./git-secrets --scan
+          ./git-secrets --scan-history
 
   build:
     executor: go-agent
@@ -62,7 +59,7 @@ workflows:
   version: 2
   main:
     jobs:
-      - talisman
+      - git-secrets
       - build
       - test
       - hold:
@@ -70,7 +67,7 @@ workflows:
           requires:
             - build
             - test
-            - talisman
+            - git-secrets
       - tag:
           requires:
             - hold
