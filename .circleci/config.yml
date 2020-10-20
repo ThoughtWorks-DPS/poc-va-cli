@@ -65,6 +65,7 @@ workflows:
   main:
     jobs:
       - check-for-secrets
+          context: dps-va-di
       - build
       - test
       - hold:
