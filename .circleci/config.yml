@@ -16,13 +16,14 @@ jobs:
     steps:
       - checkout
       - secrethub/exec:
-          step-name: Run
+          step-name: Setup
           command: |
             curl -sL https://raw.githubusercontent.com/awslabs/git-secrets/master/git-secrets >> git-secrets
             chmod +x git-secrets
             curl -H "Authorization: token $GITHUB_TOKEN" https://raw.githubusercontent.com/ThoughtWorks-DPS/poc-documentation/master/git-secrets-pattern.txt >> git-secrets-pattern.txt
             ./git-secrets --add-provider -- cat git-secrets-pattern.txt
-            ./git-secrets --scan
+      - scan: |
+          ./git-secrets --scan
 
   build:
     executor: go-agent
