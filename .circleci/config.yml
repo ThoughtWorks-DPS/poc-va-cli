@@ -64,7 +64,7 @@ workflows:
   version: 2
   main:
     jobs:
-      - check-for-secrets
+      - check-for-secrets:
           context: dps-va-di
       - build
       - test
