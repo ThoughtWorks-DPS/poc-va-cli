@@ -7,10 +7,13 @@ executors:
   go-agent:
     docker:
       - image: cimg/go:1.15.2
+  base-agent:
+    docker:
+      - image: cimg/base:stable
 
 jobs:
   check-for-secrets:
-    executor: go-agent
+    executor: base-agent
     environment:
       GITHUB_TOKEN: secrethub://vapoc/platform/svc/github/access-token
     steps:
@@ -38,22 +41,24 @@ jobs:
       - run: go test ./...
 
   tag:
-    machine: true
+    executor: base-agent
     steps:
       - checkout
+      - setup_remote_docker:
+          version: 19.03.13
       - add_ssh_keys:
           fingerprints:
             - "48:34:f1:e3:cb:c7:fa:40:cc:70:9f:62:f4:95:10:cb"
       - run: |
           current_version=$(git describe --abbrev=0 | tr -d 'v')
           new_version=$(docker run --rm alpine/semver semver -c -i patch $current_version)
-          git config --global user.email "rilau@thoughtworks.com"
-          git config --global user.name "Rich Lau"
+          git config --global user.email "twdps.io@gmail.com"
+          git config --global user.name "twdps.io"
           git tag -a "v${new_version}" -m "v${new_version}"
           git push origin master "v${new_version}"
 
   release:
-    executor: go-agent
+    executor: base-agent
     environment:
       GITHUB_TOKEN: secrethub://vapoc/platform/svc/github/access-token
     steps:
