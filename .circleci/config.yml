@@ -58,7 +58,7 @@ jobs:
           git push origin master "v${new_version}"
 
   release:
-    executor: base-agent
+    executor: go-agent
     environment:
       GITHUB_TOKEN: secrethub://vapoc/platform/svc/github/access-token
     steps:
