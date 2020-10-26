@@ -25,7 +25,6 @@ jobs:
           curl -sL https://raw.githubusercontent.com/awslabs/git-secrets/master/git-secrets >> git-secrets
           chmod +x git-secrets
           ./git-secrets --add-provider -- curl https://raw.githubusercontent.com/ThoughtWorks-DPS/poc-resources/master/git-secrets-pattern.txt
-      - run: |
           ./git-secrets --scan
 
   build:
