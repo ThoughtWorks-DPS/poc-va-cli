@@ -3,7 +3,7 @@
 >  brew install pre-commit
 2. Install git secrets
 > brew install git-secrets
-> git-secrets add-provider -- curl https://raw.githubusercontent.com/ThoughtWorks-DPS/poc-resources/main/git-secrets-pattern.txt
+> git-secrets --add-provider -- curl https://raw.githubusercontent.com/ThoughtWorks-DPS/poc-resources/main/git-secrets-pattern.txt
 3. Build poc-va-cli
 > go build
 4. Run poc-va-cli
