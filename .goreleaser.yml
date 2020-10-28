@@ -21,7 +21,7 @@ archives:
       darwin: macOS
   - format_overrides:
       goos: windows
-        format: zip
+      format: zip
 checksum:
   name_template: 'checksums.txt'
 snapshot:
