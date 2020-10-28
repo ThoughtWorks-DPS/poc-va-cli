@@ -18,12 +18,12 @@ jobs:
   smoke-test:
     executor: linux-smoke
     environment:
+      CURRENT_VERSION: $(echo $CIRCLE_SHA1 | cut -c -7)
       IMAGE: "Linux_i386.tar.gz"
       PROJECT: "poc-va-cli"
     steps:
       - checkout
       - run: |
-          CURRENT_VERSION=$(git describe --abbrev=0 | tr -d 'v')
           ./smoke-test.sh
 
   check-for-secrets:
