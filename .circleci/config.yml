@@ -17,6 +17,10 @@ executors:
 jobs:
   smoke-test:
     executor: linux-smoke
+    environment:
+      CURRENT_VERSION: $(git describe --abbrev=0 | tr -d 'v')
+      IMAGE: "Linux_i386.tar.gz"
+      PROJECT: "poc-va-cli"
     steps:
       - checkout
       - run: ./smoke-test.sh
