@@ -10,11 +10,15 @@ executors:
   base-agent:
     docker:
       - image: cimg/base:stable
+  linux-smoke:
+    docker:
+      - image: i386/buildpack-deps
 
 jobs:
   smoke-test:
-    executor: base-agent
+    executor: linux-smoke
     steps:
+      - checkout
       - run: ./smoke-test.sh
 
   check-for-secrets:
