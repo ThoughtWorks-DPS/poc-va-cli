@@ -19,6 +19,7 @@ archives:
       386: i386
       amd64: x86_64
       darwin: macOS
+      windows: Windows
     format_overrides:
      - goos: windows
        format: zip
