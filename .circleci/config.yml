@@ -50,7 +50,11 @@ jobs:
       - checkout
       - run:
           shell: powershell.exe
-          command: ./smoke-test.sh
+          command: |
+            ./smoke-test.sh
+            Write-Output "flag start"
+            ./poc-va-cli.exe get | Write-Output
+            Write-Output "flag end"
 
   check-for-secrets:
     executor: base-agent
