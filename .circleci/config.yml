@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   secrethub: secrethub/cli@1.0.0
+  win: circleci/windows@2.2.0
 
 executors:
   go-agent:
@@ -37,6 +38,19 @@ jobs:
       - checkout
       - run: |
           ./smoke-test.sh
+
+  smoke-test-win:
+    executor:
+      name: win/default
+      shell: powershell.exe
+    environment:
+      IMAGE: "Windows_x86_64.zip"
+      PROJECT: "poc-va-cli"
+    steps:
+      - checkout
+      - run:
+          shell: powershell.exe
+          command: ./smoke-test.sh
 
   check-for-secrets:
     executor: base-agent
@@ -119,7 +133,15 @@ workflows:
               ignore: /.*/
             tags:
               only: /v[0-9]+(\.[0-9]+)*(-.*)*/
-      - smoke-test-macos:
+      # - smoke-test-macos:
+      #     requires:
+      #       - release
+      #     filters:
+      #       branches:
+      #         ignore: /.*/
+      #       tags:
+      #         only: /v[0-9]+(\.[0-9]+)*(-.*)*/
+      - smoke-test-win:
           requires:
             - release
           filters:
