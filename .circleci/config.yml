@@ -53,6 +53,7 @@ jobs:
           command: |
             ./smoke-test.sh
             Write-Output "flag start"
+            pwd
             ./poc-va-cli.exe get | Write-Output
             Write-Output "flag end"
 
