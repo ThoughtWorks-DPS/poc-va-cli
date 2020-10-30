@@ -7,19 +7,31 @@ executors:
   go-agent:
     docker:
       - image: cimg/go:1.15.2
+
   base-agent:
     docker:
       - image: cimg/base:stable
-  linux-smoke:
+
+  linux-i386-agent:
     docker:
       - image: i386/buildpack-deps
 
 jobs:
-  smoke-test:
-    executor: linux-smoke
+  smoke-test-linux:
+    executor: linux-i386-agent
     environment:
-      CURRENT_VERSION: $(echo $CIRCLE_SHA1 | cut -c -7)
       IMAGE: "Linux_i386.tar.gz"
+      PROJECT: "poc-va-cli"
+    steps:
+      - checkout
+      - run: |
+          ./smoke-test.sh
+
+  smoke-test-macos:
+    macos:
+      xcode: 12.1.0
+    environment:
+      IMAGE: "macOS_x86_64.tar.gz"
       PROJECT: "poc-va-cli"
     steps:
       - checkout
@@ -99,8 +111,16 @@ workflows:
               ignore: /.*/
             tags:
               only: /v[0-9]+(\.[0-9]+)*(-.*)*/
-      - smoke-test:
-          requires: 
+      - smoke-test-linux:
+          requires:
+            - release
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
+      - smoke-test-macos:
+          requires:
             - release
           filters:
             branches:
