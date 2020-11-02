@@ -43,6 +43,9 @@ jobs:
     executor:
       name: win/default
       shell: powershell.exe
+    environment:
+      IMAGE: "Windows_x86_64.zip"
+      PROJECT: "poc-va-cli"
     steps:
       - checkout
       - run:
