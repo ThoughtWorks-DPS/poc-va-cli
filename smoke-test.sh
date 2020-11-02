@@ -3,17 +3,8 @@
 CURRENT_VERSION=$(git describe --abbrev=0 | tr -d 'v')
 
 url="https://github.com/ThoughtWorks-DPS/${PROJECT}/releases/download/v${CURRENT_VERSION}/${PROJECT}_${CURRENT_VERSION}_${IMAGE}"
-
 curl -L $url --output ${PROJECT}_${IMAGE}
+tar -xvzf ${PROJECT}_${IMAGE}
 
-if [ $IMAGE = "Windows_x86_64.zip" ]; then
-  unzip -o ${PROJECT}_${IMAGE}
-#   $RES = ./poc-va-cli.exe get
-#   Write-Outout $RES
-    ./poc-va-cli.exe get > output.log
-    Get-Content ./output.log
-else
-  tar -xvzf ${PROJECT}_${IMAGE}
-  ./poc-va-cli get
-fi
+./poc-va-cli get
 

@@ -51,7 +51,7 @@ jobs:
       - run:
           shell: powershell.exe
           command: |
-            ./smoke-test.sh
+            ./smoke-test.ps1
 
   check-for-secrets:
     executor: base-agent
