@@ -8,8 +8,10 @@ curl -L $url --output ${PROJECT}_${IMAGE}
 
 if [ $IMAGE = "Windows_x86_64.zip" ]; then
   unzip -o ${PROJECT}_${IMAGE}
-  $RES = ./poc-va-cli.exe get
-  Write-Outout $RES
+#   $RES = ./poc-va-cli.exe get
+#   Write-Outout $RES
+    ./poc-va-cli.exe get > output.log
+    Get-Content ./output.log
 else
   tar -xvzf ${PROJECT}_${IMAGE}
   ./poc-va-cli get
