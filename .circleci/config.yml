@@ -131,19 +131,9 @@ workflows:
               ignore: /.*/
             tags:
               only: /v[0-9]+(\.[0-9]+)*(-.*)*/
-      # - smoke-test-macos:
-      #     requires:
-      #       - release
-      #     filters:
-      #       branches:
-      #         ignore: /.*/
-      #       tags:
-      #         only: /v[0-9]+(\.[0-9]+)*(-.*)*/
-      - smoke-test-win:
-          requires:
-            - release
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
+  weekly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * FRI"
+    jobs:
+      - smoke-test-win
