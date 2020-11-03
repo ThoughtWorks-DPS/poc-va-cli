@@ -26,7 +26,7 @@ jobs:
     steps:
       - checkout
       - run: |
-          ./smoke-test.sh
+          ./test/smoke/smoke-test.sh
 
   smoke-test-macos:
     macos:
@@ -37,7 +37,7 @@ jobs:
     steps:
       - checkout
       - run: |
-          ./smoke-test.sh
+          ./test/smoke/smoke-test.sh
 
   smoke-test-win:
     executor:
@@ -48,7 +48,7 @@ jobs:
       - run:
           shell: powershell.exe
           command: |
-            ./smoke-test.ps1
+            ./test/smoke/smoke-test.ps1
 
   check-for-secrets:
     executor: base-agent
