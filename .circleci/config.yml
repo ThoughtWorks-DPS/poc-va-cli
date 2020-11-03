@@ -134,6 +134,10 @@ workflows:
   weekly:
     triggers:
       - schedule:
-          cron: "0 0 * * FRI"
+          cron: "0 0 * * 5"
+          filters:
+            branches:
+              only:
+                - main
     jobs:
       - smoke-test-win
