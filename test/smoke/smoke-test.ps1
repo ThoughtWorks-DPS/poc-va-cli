@@ -1,4 +1,4 @@
-$CURRENT_VERSION = git describe --abbrev=0 | tr -d 'v'
+$CURRENT_VERSION = git describe --tag --abbrev=0
 $IMAGE = "Windows_x86_64.zip"
 $PROJECT = "poc-va-cli"
 
