@@ -1,18 +1,9 @@
 package cmd
 
 import (
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"testing"
 )
-
-func TestHelloWorld(t *testing.T){
-	service := HelloService{"https://httpbin.org/get"}
-	s := hello(service)
-
-	assert.Equal(t, "200 OK", s, "Status code should equal 200 OK" )
-}
-
 
 type MockedService struct{
 	mock.Mock

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"net/http"
+	"os"
+	"io/ioutil"
 )
 
 func init() {
@@ -15,7 +17,10 @@ var helloCmd = &cobra.Command{
 	Short: "Call hello endpoints in API",
 	Long: "Call to the API endpoint /hello",
 	Run: func(cmd *cobra.Command, args []string) {
-		service := HelloService{url: "https://httpbin.org/get"}
+		if len(os.Getenv("URL")) == 0 {
+			os.Setenv("URL", "https://devportal.name/teams")
+		}
+		service := HelloService{}
 		hello(service)
 	},
 }
@@ -32,10 +37,12 @@ type Service interface {
 }
 
 type HelloService struct {
-	url string
 }
 
 func (s HelloService) hello() string {
-	res, _ := http.Get(s.url)
-	return res.Status
+	res, _ := http.Get(os.Getenv("URL") + "/hello")
+	defer res.Body.Close()
+	bodyBytes, _ := ioutil.ReadAll(res.Body)
+	bodyString := string(bodyBytes)
+	return bodyString
 }
