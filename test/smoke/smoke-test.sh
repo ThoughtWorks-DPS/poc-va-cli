@@ -7,5 +7,5 @@ curl -L $url --output ${PROJECT}_${IMAGE}
 tar -xvzf ${PROJECT}_${IMAGE}
 
 
-./poc-va-cli get
+./poc-va-cli help
 
