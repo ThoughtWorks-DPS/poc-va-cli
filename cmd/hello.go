@@ -21,28 +21,35 @@ var helloCmd = &cobra.Command{
 			os.Setenv("URL", "https://devportal.name/teams")
 		}
 		service := HelloService{}
-		hello(service)
+		doHello(service)
 	},
 }
 
-func hello(s Service) string {
-	status := s.hello()
+type ApiUrl struct {
+	URL string
+}
+func doHello(s Service) string {
+	apiUrl := ApiUrl{URL: os.Getenv("URL") + "/hello"}.URL
+	status := s.getHello(apiUrl)
 
 	fmt.Println(status)
 	return status
 }
 
 type Service interface {
-	hello() string
+	getHello(url string) string
 }
 
 type HelloService struct {
 }
 
-func (s HelloService) hello() string {
-	res, _ := http.Get(os.Getenv("URL") + "/hello")
-	defer res.Body.Close()
-	bodyBytes, _ := ioutil.ReadAll(res.Body)
-	bodyString := string(bodyBytes)
-	return bodyString
+func (s HelloService) getHello(url string) string {
+	res, _ := http.Get(url)
+	if(res.StatusCode == 200){
+		defer res.Body.Close()
+		bodyBytes, _ := ioutil.ReadAll(res.Body)
+		bodyString := string(bodyBytes)
+		return bodyString
+	}
+	return "Could not reach API"
 }
