@@ -20,7 +20,7 @@ var helloCmd = &cobra.Command{
 	},
 }
 
-func doHello(client clients.RestClient) string {
+func doHello(client clients.ApiClient) string {
 	status := client.GetHello()
 	fmt.Println(status)
 	return status

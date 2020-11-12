@@ -6,28 +6,30 @@ import (
 	"net/http"
 )
 
-type RestClient interface {
+type ApiClient interface {
 	GetHello() string
 }
 
-type ApiClient struct {
+type ApiClientImpl struct {
 	URL string
 }
 
-func NewApiClient() ApiClient {
-	client := ApiClient{}
+func NewApiClient() ApiClientImpl {
+	client := ApiClientImpl{}
 	client.URL = viper.GetString("API_SERVICE_BASE_URL")
 	return client
 }
 
-func (client ApiClient) GetHello() string {
+func (client ApiClientImpl) GetHello() string {
 	helloEndPoint := client.URL + "/hello"
 	res, _ := http.Get(helloEndPoint)
+
 	if res.StatusCode == 200 {
 		defer res.Body.Close()
 		bodyBytes, _ := ioutil.ReadAll(res.Body)
 		bodyString := string(bodyBytes)
 		return bodyString
 	}
+
 	return "Could not reach API"
 }

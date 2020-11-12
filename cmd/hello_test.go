@@ -9,27 +9,25 @@ import (
 	"testing"
 )
 
-
 func TestDoHello(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	mockedHelloClient := clients.NewMockRestClient(ctrl)
 
-	mockedHelloClient.EXPECT().
+	mockedApiClient := clients.NewMockApiClient(ctrl)
+	mockedApiClient.EXPECT().
 		GetHello().
 		Return("Hello from the API!")
 
-	status := doHello(mockedHelloClient)
-
-	assert.Equal(t, "Hello from the API!", status)
+	assert.Equal(t, "Hello from the API!", doHello(mockedApiClient))
 }
 
 func TestGetHelloSuccessfulCall(t *testing.T) {
 	client := clients.NewApiClient()
+	var apiStub = httptest.NewServer(http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
+		response.WriteHeader(http.StatusOK)
+	 	response.Write([]byte("Hello from the API!"))
 
-	var apiStub = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-	 	w.Write([]byte("Hello from the API!"))
+		assert.Equal(t, "/hello", request.URL.Path)
 	}))
 
 	 client.URL = apiStub.URL
@@ -39,8 +37,8 @@ func TestGetHelloSuccessfulCall(t *testing.T) {
 
 func TestGetHelloFailedCall(t *testing.T) {
 	client := clients.NewApiClient()
-	var apiStub = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusInternalServerError)
+	var apiStub = httptest.NewServer(http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
+		response.WriteHeader(http.StatusInternalServerError)
 	}))
 
 	client.URL = apiStub.URL
