@@ -3,9 +3,9 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"net/http"
-	"os"
+	"github.com/spf13/viper"
 	"io/ioutil"
+	"net/http"
 )
 
 func init() {
@@ -17,35 +17,33 @@ var helloCmd = &cobra.Command{
 	Short: "Call hello endpoints in API",
 	Long: "Call to the API endpoint /hello",
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(os.Getenv("URL")) == 0 {
-			os.Setenv("URL", "https://devportal.name/teams")
-		}
-		service := HelloService{}
-		doHello(service)
+		client := HelloClient{}
+		doHello(client)
 	},
 }
 
 type ApiUrl struct {
 	URL string
 }
-func doHello(s Service) string {
-	apiUrl := ApiUrl{URL: os.Getenv("URL") + "/hello"}.URL
-	status := s.getHello(apiUrl)
+
+type RestClient interface {
+	getHello(url string) string
+}
+
+type HelloClient struct {
+}
+
+func doHello(client RestClient) string {
+	apiUrl := ApiUrl{URL: viper.GetString("API_SERVICE_BASE_URL") + "/hello"}
+	status := client.getHello(apiUrl.URL)
 
 	fmt.Println(status)
 	return status
 }
 
-type Service interface {
-	getHello(url string) string
-}
-
-type HelloService struct {
-}
-
-func (s HelloService) getHello(url string) string {
+func (client HelloClient) getHello(url string) string {
 	res, _ := http.Get(url)
-	if(res.StatusCode == 200){
+	if res.StatusCode == 200 {
 		defer res.Body.Close()
 		bodyBytes, _ := ioutil.ReadAll(res.Body)
 		bodyString := string(bodyBytes)

@@ -15,8 +15,19 @@ limitations under the License.
 */
 package main
 
-import "github.com/ThoughtWorks-DPS/poc-va-cli/cmd"
+import (
+	"fmt"
+	"github.com/ThoughtWorks-DPS/poc-va-cli/cmd"
+	"github.com/spf13/viper"
+)
 
 func main() {
+	viper.SetConfigName("config")
+	viper.AddConfigPath(".")
+	viper.AutomaticEnv()
+	viper.SetConfigType("yml")
+	if err := viper.ReadInConfig(); err != nil {
+		fmt.Printf("Error reading config file, %s", err)
+	}
 	cmd.Execute()
 }
