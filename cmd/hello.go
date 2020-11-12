@@ -2,10 +2,8 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/ThoughtWorks-DPS/poc-va-cli/clients"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-	"io/ioutil"
-	"net/http"
 )
 
 func init() {
@@ -17,37 +15,13 @@ var helloCmd = &cobra.Command{
 	Short: "Call hello endpoints in API",
 	Long: "Call to the API endpoint /hello",
 	Run: func(cmd *cobra.Command, args []string) {
-		client := HelloClient{}
+		client := clients.NewApiClient()
 		doHello(client)
 	},
 }
 
-type ApiUrl struct {
-	URL string
-}
-
-type RestClient interface {
-	getHello(url string) string
-}
-
-type HelloClient struct {
-}
-
-func doHello(client RestClient) string {
-	apiUrl := ApiUrl{URL: viper.GetString("API_SERVICE_BASE_URL") + "/hello"}
-	status := client.getHello(apiUrl.URL)
-
+func doHello(client clients.RestClient) string {
+	status := client.GetHello()
 	fmt.Println(status)
 	return status
-}
-
-func (client HelloClient) getHello(url string) string {
-	res, _ := http.Get(url)
-	if res.StatusCode == 200 {
-		defer res.Body.Close()
-		bodyBytes, _ := ioutil.ReadAll(res.Body)
-		bodyString := string(bodyBytes)
-		return bodyString
-	}
-	return "Could not reach API"
 }

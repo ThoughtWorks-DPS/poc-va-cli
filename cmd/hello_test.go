@@ -1,25 +1,22 @@
 package cmd
 
 import (
-	"fmt"
+	"github.com/ThoughtWorks-DPS/poc-va-cli/clients"
 	"github.com/golang/mock/gomock"
-	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"testing"
 )
 
 
-func TestDoHelloDefaultApiUrl(t *testing.T) {
-	setUpViper()
+func TestDoHello(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	mockedHelloClient := NewMockRestClient(ctrl)
+	mockedHelloClient := clients.NewMockRestClient(ctrl)
 
 	mockedHelloClient.EXPECT().
-		getHello("http://api.devportal.name/hello").
+		GetHello().
 		Return("Hello from the API!")
 
 	status := doHello(mockedHelloClient)
@@ -27,45 +24,26 @@ func TestDoHelloDefaultApiUrl(t *testing.T) {
 	assert.Equal(t, "Hello from the API!", status)
 }
 
-func TestDoHelloOverrideApiUrl(t *testing.T) {
-	setUpViper()
-	os.Setenv("API_SERVICE_BASE_URL", "http://localhost:5000")
-
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
-	mockedHelloClient := NewMockRestClient(ctrl)
-	mockedHelloClient.EXPECT().getHello("http://localhost:5000/hello")
-
-	doHello(mockedHelloClient)
-}
-
 func TestGetHelloSuccessfulCall(t *testing.T) {
-	client := HelloClient{}
-	 var apiStub = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-	 	w.WriteHeader(http.StatusOK)
+	client := clients.NewApiClient()
+
+	var apiStub = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
 	 	w.Write([]byte("Hello from the API!"))
 	}))
 
-	assert.Equal(t, "Hello from the API!", client.getHello(apiStub.URL))
+	 client.URL = apiStub.URL
+
+	 assert.Equal(t, "Hello from the API!", client.GetHello())
 }
 
 func TestGetHelloFailedCall(t *testing.T) {
-	client := HelloClient{}
+	client := clients.NewApiClient()
 	var apiStub = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 	}))
 
-	assert.Equal(t, "Could not reach API", client.getHello(apiStub.URL))
-}
+	client.URL = apiStub.URL
 
-func setUpViper() {
-	viper.SetConfigName("config")
-	viper.AddConfigPath("..")
-	viper.AutomaticEnv()
-	viper.SetConfigType("yml")
-
-	if err := viper.ReadInConfig(); err != nil {
-		fmt.Printf("Error reading config file, %s", err)
-	}
+	assert.Equal(t, "Could not reach API", client.GetHello())
 }
