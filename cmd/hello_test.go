@@ -27,7 +27,7 @@ func TestGetHelloSuccessfulCall(t *testing.T) {
 		response.WriteHeader(http.StatusOK)
 	 	response.Write([]byte("Hello from the API!"))
 
-		assert.Equal(t, "/hello", request.URL.Path)
+		assert.Equal(t, "/teams/hello", request.URL.Path)
 	}))
 
 	 client.URL = apiStub.URL

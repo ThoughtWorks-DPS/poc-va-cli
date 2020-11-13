@@ -21,7 +21,7 @@ func NewApiClient() ApiClientImpl {
 }
 
 func (client ApiClientImpl) GetHello() string {
-	helloEndPoint := client.URL + "/hello"
+	helloEndPoint := client.URL + "/teams/hello"
 	res, _ := http.Get(helloEndPoint)
 
 	if res.StatusCode == 200 {
