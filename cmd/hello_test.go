@@ -1,10 +1,10 @@
 package cmd
 
 import (
-	"github.com/ThoughtWorks-DPS/poc-va-cli/clients"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"testing"
+	"voltron/clients"
 )
 
 func TestDoHello(t *testing.T) {

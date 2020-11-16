@@ -1,4 +1,4 @@
-module github.com/ThoughtWorks-DPS/poc-va-cli
+module voltron
 
 go 1.14
 

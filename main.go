@@ -16,8 +16,8 @@ limitations under the License.
 package main
 
 import (
-	"github.com/ThoughtWorks-DPS/poc-va-cli/cmd"
-	"github.com/ThoughtWorks-DPS/poc-va-cli/vconfig"
+	"voltron/cmd"
+	"voltron/vconfig"
 )
 
 func main() {
