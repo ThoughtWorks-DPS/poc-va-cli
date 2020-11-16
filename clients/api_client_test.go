@@ -43,14 +43,17 @@ func TestSetDefaultApiUrl(t *testing.T) {
 }
 
 func TestOverrideDefaultApiUrl(t *testing.T) {
-	client := NewApiClient()
+	loadViperConfig()
 	os.Setenv("API_SERVICE_BASE_URL", "http://localhost:5000")
+	client := NewApiClient()
 
 	assert.Equal(t, "http://localhost:5000", client.URL)
 }
 
 func loadViperConfig() {
-	viper.AddConfigPath("../")
+	viper.AddConfigPath("..")
+	viper.AutomaticEnv()
+
 	if err := viper.ReadInConfig(); err != nil {
 		fmt.Printf("Error reading config file, %s", err)
 	}
