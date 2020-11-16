@@ -16,13 +16,17 @@ type ApiClientImpl struct {
 
 func NewApiClient() ApiClientImpl {
 	client := ApiClientImpl{}
-	client.URL = viper.GetString("API_SERVICE_BASE_URL")
+	client.URL = viper.GetString("api_service_base_url")
 	return client
 }
 
 func (client ApiClientImpl) GetHello() string {
 	helloEndPoint := client.URL + "/teams/hello"
-	res, _ := http.Get(helloEndPoint)
+	res, err := http.Get(helloEndPoint)
+
+	if err != nil {
+		return "Invalid url."
+	}
 
 	if res.StatusCode == 200 {
 		defer res.Body.Close()
@@ -31,5 +35,5 @@ func (client ApiClientImpl) GetHello() string {
 		return bodyString
 	}
 
-	return "Could not reach API"
+	return "Error: Service Returned " + res.Status
 }
