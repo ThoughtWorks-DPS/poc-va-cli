@@ -17,11 +17,9 @@ package main
 
 import (
 	"voltron/cmd"
-	"voltron/vconfig"
 )
 
 func main() {
-	vconfig.LoadViperConfig()
 	cmd.Execute()
 }
 

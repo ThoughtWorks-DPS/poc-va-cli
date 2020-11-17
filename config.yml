@@ -1,3 +1,0 @@
-#Generated viper config file. Changes should be made in vconfig/viper_config.go
-#This file will not be overwritten so it should be deleted if changes are made.
-api_service_base_url: http://api.devportal.name

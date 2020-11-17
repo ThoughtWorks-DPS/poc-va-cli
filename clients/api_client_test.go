@@ -52,6 +52,7 @@ func TestOverrideDefaultApiUrl(t *testing.T) {
 
 func loadViperConfig() {
 	viper.AddConfigPath("..")
+	viper.SetConfigName(".api_config")
 	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err != nil {
