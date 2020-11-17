@@ -7,4 +7,4 @@ $url='https://github.com/ThoughtWorks-DPS/' + $PROJECT + '/releases/download/v' 
 curl -L $url --output cli.zip
 unzip cli.zip -d cli/
 
-./cli/poc-va-cli.exe help
+./cli/voltron.exe help
