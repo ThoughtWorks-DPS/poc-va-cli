@@ -6,7 +6,6 @@ before:
     - go mod download
     # you may remove this if you don't need go generate
     - go generate ./...
-binary_name: voltron
 builds:
   - env:
       - CGO_ENABLED=0
@@ -14,6 +13,7 @@ builds:
       - linux
       - darwin
       - windows
+    binary: voltron
 archives:
   - replacements:
       linux: Linux
