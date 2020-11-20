@@ -102,11 +102,8 @@ workflows:
           requires:
             - hold
           post-steps:
-            - git-tag/apply:
-                name: apply git tag
-                semantic-version: patch
-                fingerprint: "48:34:f1:e3:cb:c7:fa:40:cc:70:9f:62:f4:95:10:cb"
-                context: dps-va-di
+            - run:
+                command: export SEMANTIC_VERSION=patch
       - approve-minor-tag:
           type: approval
           requires:
@@ -115,9 +112,11 @@ workflows:
           type: approval
           requires:
             - hold
+      - approve-release:
+          type: approval
       - git-tag/apply:
           name: apply git tag
-          semantic-version: patch
+          semantic-version: $SEMANTIC_VERSION
           fingerprint: "48:34:f1:e3:cb:c7:fa:40:cc:70:9f:62:f4:95:10:cb"
           context: dps-va-di
           requires:
