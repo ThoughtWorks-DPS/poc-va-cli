@@ -115,6 +115,7 @@ workflows:
             - build
             - test
       - git-tag/apply:
+          name: apply git tag
           semantic-version: patch
           fingerprint: "48:34:f1:e3:cb:c7:fa:40:cc:70:9f:62:f4:95:10:cb"
           context: dps-va-di
