@@ -91,49 +91,46 @@ workflows:
           context: dps-va-di
       - build
       - test
-      - approve-patch-tag:
-          type: approval
-          requires:
-            - check-for-secrets
-            - build
-            - test
-          post-steps:
-            - run:
-                command: export SEMANTIC_VERSION=patch
-      - approve-minor-tag:
-          type: approval
-          requires:
-            - check-for-secrets
-            - build
-            - test
-          post-steps:
-            - run:
-                command: export SEMANTIC_VERSION=minor
-      - approve-major-tag:
-          type: approval
-          requires:
-            - check-for-secrets
-            - build
-            - test
-          post-steps:
-            - run:
-                command: export SEMANTIC_VERSION=major
       - approve-release:
           type: approval
           requires:
-            - approve-patch-tag
-            - approve-minor-tag
-            - approve-major-tag
+            - check-for-secrets
+            - build
+            - test
+      - approve-patch-tag:
+          type: approval
+          requires:
+            - approve-release
+      - approve-minor-tag:
+          type: approval
+          requires:
+            - approve-release
+          post-steps:
+      - approve-major-tag:
+          type: approval
+          requires:
+            - approve-release
       - git-tag/apply:
           name: apply git tag
-          semantic-version: $SEMANTIC_VERSION
+          semantic-version: patch
           fingerprint: "48:34:f1:e3:cb:c7:fa:40:cc:70:9f:62:f4:95:10:cb"
           context: dps-va-di
           requires:
-            - approve-release
-          pre-steps:
-            - run:
-                command: echo "apply $SEMANTIC_VERSION release"
+            - approve-patch-tag
+      - git-tag/apply:
+          name: apply git minor tag
+          semantic-version: minor
+          fingerprint: "48:34:f1:e3:cb:c7:fa:40:cc:70:9f:62:f4:95:10:cb"
+          context: dps-va-di
+          requires:
+            - approve-minor-tag
+      - git-tag/apply:
+          name: apply git major tag
+          semantic-version: major
+          fingerprint: "48:34:f1:e3:cb:c7:fa:40:cc:70:9f:62:f4:95:10:cb"
+          context: dps-va-di
+          requires:
+            - approve-major-tag
       - release:
           context: dps-va-di
           filters:
