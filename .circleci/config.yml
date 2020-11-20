@@ -91,36 +91,49 @@ workflows:
           context: dps-va-di
       - build
       - test
-      - hold:
+      - approve-patch-tag:
           type: approval
           requires:
             - check-for-secrets
             - build
             - test
-      - approve-patch-tag:
-          type: approval
-          requires:
-            - hold
           post-steps:
             - run:
                 command: export SEMANTIC_VERSION=patch
       - approve-minor-tag:
           type: approval
           requires:
-            - hold
+            - check-for-secrets
+            - build
+            - test
+          post-steps:
+            - run:
+                command: export SEMANTIC_VERSION=minor
       - approve-major-tag:
           type: approval
           requires:
-            - hold
+            - check-for-secrets
+            - build
+            - test
+          post-steps:
+            - run:
+                command: export SEMANTIC_VERSION=major
       - approve-release:
           type: approval
+          requires:
+            - approve-patch-tag
+            - approve-minor-tag
+            - approve-major-tag
       - git-tag/apply:
           name: apply git tag
           semantic-version: $SEMANTIC_VERSION
           fingerprint: "48:34:f1:e3:cb:c7:fa:40:cc:70:9f:62:f4:95:10:cb"
           context: dps-va-di
           requires:
-            - hold
+            - approve-release
+          pre-steps:
+            - run:
+                command: echo "apply $SEMANTIC_VERSION release"
       - release:
           context: dps-va-di
           filters:
