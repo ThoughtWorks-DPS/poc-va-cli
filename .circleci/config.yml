@@ -126,7 +126,7 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
+              only: /[0-9]+(\.[0-9]+)*(-.*)*/
       - smoke-test-linux:
           requires:
             - release
@@ -134,7 +134,7 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
+              only: /[0-9]+(\.[0-9]+)*(-.*)*/
       - smoke-test-macos:
           requires:
             - release
@@ -142,7 +142,7 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
+              only: /[0-9]+(\.[0-9]+)*(-.*)*/
   weekly:
     triggers:
       - schedule:
