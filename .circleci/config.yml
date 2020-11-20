@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   secrethub: secrethub/cli@1.0.0
   win: circleci/windows@2.2.0
+  git-tag: twdps/git-tag-orb@dev:latest
 
 executors:
   go-agent:
@@ -72,22 +73,22 @@ jobs:
       - checkout
       - run: go test ./...
 
-  tag:
-    executor: base-agent
-    steps:
-      - checkout
-      - setup_remote_docker:
-          version: 19.03.13
-      - add_ssh_keys:
-          fingerprints:
-            - "48:34:f1:e3:cb:c7:fa:40:cc:70:9f:62:f4:95:10:cb"
-      - run: |
-          current_version=$(git describe --abbrev=0 | tr -d 'v')
-          new_version=$(docker run --rm alpine/semver semver -c -i patch $current_version)
-          git config --global user.email "twdps.io@gmail.com"
-          git config --global user.name "twdps.io"
-          git tag -a "v${new_version}" -m "v${new_version}"
-          git push origin master "v${new_version}"
+#  tag:
+#    executor: base-agent
+#    steps:
+#      - checkout
+#      - setup_remote_docker:
+#          version: 19.03.13
+#      - add_ssh_keys:
+#          fingerprints:
+#            - "48:34:f1:e3:cb:c7:fa:40:cc:70:9f:62:f4:95:10:cb"
+#      - run: |
+#          current_version=$(git describe --abbrev=0 | tr -d 'v')
+#          new_version=$(docker run --rm alpine/semver semver -c -i patch $current_version)
+#          git config --global user.email "twdps.io@gmail.com"
+#          git config --global user.name "twdps.io"
+#          git tag -a "v${new_version}" -m "v${new_version}"
+#          git push origin master "v${new_version}"
 
   release:
     executor: go-agent
@@ -113,7 +114,10 @@ workflows:
             - check-for-secrets
             - build
             - test
-      - tag:
+      - git-tag/apply:
+          semantic-version: patch
+          fingerprint: "48:34:f1:e3:cb:c7:fa:40:cc:70:9f:62:f4:95:10:cb"
+          context: dps-va-di
           requires:
             - hold
       - release:
