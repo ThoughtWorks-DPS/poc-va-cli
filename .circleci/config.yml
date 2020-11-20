@@ -91,7 +91,7 @@ workflows:
           context: dps-va-di
       - build
       - test
-      - approve-release:
+      - hold:
           type: approval
           requires:
             - check-for-secrets
@@ -100,32 +100,32 @@ workflows:
       - approve-patch-tag:
           type: approval
           requires:
-            - approve-release
+            - hold
       - approve-minor-tag:
           type: approval
           requires:
-            - approve-release
+            - hold
           post-steps:
       - approve-major-tag:
           type: approval
           requires:
-            - approve-release
+            - hold
       - git-tag/apply:
-          name: apply git tag
+          name: apply git patch
           semantic-version: patch
           fingerprint: "48:34:f1:e3:cb:c7:fa:40:cc:70:9f:62:f4:95:10:cb"
           context: dps-va-di
           requires:
             - approve-patch-tag
       - git-tag/apply:
-          name: apply git minor tag
+          name: apply git minor
           semantic-version: minor
           fingerprint: "48:34:f1:e3:cb:c7:fa:40:cc:70:9f:62:f4:95:10:cb"
           context: dps-va-di
           requires:
             - approve-minor-tag
       - git-tag/apply:
-          name: apply git major tag
+          name: apply git major
           semantic-version: major
           fingerprint: "48:34:f1:e3:cb:c7:fa:40:cc:70:9f:62:f4:95:10:cb"
           context: dps-va-di
