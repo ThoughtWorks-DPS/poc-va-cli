@@ -61,6 +61,29 @@ jobs:
           ./git-secrets --add-provider -- curl https://raw.githubusercontent.com/ThoughtWorks-DPS/poc-resources/master/git-secrets-pattern.txt
           ./git-secrets --scan
 
+  unit-test:
+    executor: base-agent
+    environment:
+      CC_TEST_REPORTER_ID: secrethub://vapoc/platform/svc/code-climate/poc-va-cli-reporter-id
+    steps:
+      - checkout
+      - go get github.com/axw/gocov/gocov
+      - run:
+          name: Setup Code Climate test-reporter
+          command: |
+            # download test reporter as a static binary
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+      - secrethub/exec:
+          command: |
+            ./cc-test-reporter before-build
+            go test -v ./cmd -coverprofile=cover.out
+      - secrethub/exec:
+          command: |
+            ./cc-test-reporter format-coverage -t cover.out
+            ./cc-test-reporter after-build upload-coverage --exit-code $?
+
+
   build:
     executor: go-agent
     steps:
