@@ -62,7 +62,7 @@ jobs:
           ./git-secrets --scan
 
   unit-test:
-    executor: base-agent
+    executor: go-agent
     environment:
       CC_TEST_REPORTER_ID: secrethub://vapoc/platform/svc/code-climate/poc-va-cli-reporter-id
     steps:
