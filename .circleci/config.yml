@@ -79,7 +79,6 @@ jobs:
             go test -v ./cmd -coverprofile=cover.out
       - secrethub/exec:
           command: |
-            ./cc-test-reporter format-coverage -t cover
             ./cc-test-reporter after-build upload-coverage --exit-code $?
 
 
