@@ -67,7 +67,6 @@ jobs:
       CC_TEST_REPORTER_ID: secrethub://vapoc/platform/svc/code-climate/poc-va-cli-reporter-id
     steps:
       - checkout
-      - go get github.com/axw/gocov/gocov
       - run:
           name: Setup Code Climate test-reporter
           command: |
@@ -90,12 +89,6 @@ jobs:
       - checkout
       - run: go run main.go
 
-  test:
-    executor: go-agent
-    steps:
-      - checkout
-      - run: go test ./...
-
   release:
     executor: go-agent
     environment:
@@ -113,13 +106,13 @@ workflows:
       - check-for-secrets:
           context: dps-va-di
       - build
-      - test
+      - unit-test
       - hold:
           type: approval
           requires:
             - check-for-secrets
             - build
-            - test
+            - unit-test
       - approve-patch-tag:
           type: approval
           requires:
