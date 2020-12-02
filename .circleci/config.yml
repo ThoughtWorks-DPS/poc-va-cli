@@ -107,6 +107,7 @@ workflows:
           context: dps-va-di
       - build
       - unit-test
+          context: dps-va-di
       - hold:
           type: approval
           requires:
