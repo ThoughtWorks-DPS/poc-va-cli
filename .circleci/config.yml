@@ -106,7 +106,7 @@ workflows:
       - check-for-secrets:
           context: dps-va-di
       - build
-      - unit-test
+      - unit-test:
           context: dps-va-di
       - hold:
           type: approval
