@@ -1,3 +1,2 @@
-#Ignore Jetbrain products
+*.out
 .idea
-dist
