@@ -2,3 +2,4 @@ exclude_patterns:
 - "clients/api_client_mock.go"
 - "cmd/root.go"
 - "test"
+- "**/*_test.go"
