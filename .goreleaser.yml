@@ -14,6 +14,8 @@ builds:
       - darwin
       - windows
     binary: voltron
+    ldflags:
+      - -s -w -X voltron/cmd.Version={{.Version}} -X voltron/cmd.Commit={{.Commit}}
 archives:
   - replacements:
       linux: Linux
