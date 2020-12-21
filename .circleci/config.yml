@@ -128,21 +128,21 @@ workflows:
       - git-tag/apply:
           name: apply git patch
           semantic-version: patch
-          fingerprint: "48:34:f1:e3:cb:c7:fa:40:cc:70:9f:62:f4:95:10:cb"
+          fingerprint: $SVC_FINGERPRINT
           context: dps-va-di
           requires:
             - approve-patch-tag
       - git-tag/apply:
           name: apply git minor
           semantic-version: minor
-          fingerprint: "48:34:f1:e3:cb:c7:fa:40:cc:70:9f:62:f4:95:10:cb"
+          fingerprint: $SVC_FINGERPRINT
           context: dps-va-di
           requires:
             - approve-minor-tag
       - git-tag/apply:
           name: apply git major
           semantic-version: major
-          fingerprint: "48:34:f1:e3:cb:c7:fa:40:cc:70:9f:62:f4:95:10:cb"
+          fingerprint: $SVC_FINGERPRINT
           context: dps-va-di
           requires:
             - approve-major-tag
