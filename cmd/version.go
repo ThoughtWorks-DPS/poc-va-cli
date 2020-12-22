@@ -6,10 +6,10 @@ import (
 )
 
 func init() {
-	rootCmd.AddCommand(versionCommand())
+	rootCmd.AddCommand(versionCmd())
 }
 
-func versionCommand() *cobra.Command {
+func versionCmd() *cobra.Command {
   return &cobra.Command{
   	Use: "version",
   	Short: "Current version of Voltron and API",

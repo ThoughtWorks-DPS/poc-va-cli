@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/assert"
 	"github.com/kami-zh/go-capturer"
+	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
 	"voltron/clients"
