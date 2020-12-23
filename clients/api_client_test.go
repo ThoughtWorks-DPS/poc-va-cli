@@ -33,7 +33,7 @@ func TestGetHelloFailedCall(t *testing.T) {
 
 	client.URL = apiStub.URL
 
-	assert.Equal(t, "Error: Service Returned 500 Internal Server Error", client.GetHello())
+	assert.Equal(t, "Error: API Service Returned 500 Internal Server Error", client.GetHello())
 }
 
 func TestSetDefaultApiUrl(t *testing.T) {

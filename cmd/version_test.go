@@ -6,10 +6,10 @@ import (
 	"testing"
 )
 
-func ExampleTestVersionWithDefaults() {
-	printVersion()
+func ExamplePrintCliVersionWithDefaults() {
+	printCliVersion()
 	//Output:
-	//voltron version: development, SHA: gitHash
+	//voltron version: dev, SHA: dev
 }
 
 func TestVersionCmdIntegration(t *testing.T) {
@@ -18,7 +18,7 @@ func TestVersionCmdIntegration(t *testing.T) {
 		cmd.ExecuteC()
 	})
 
-	if !strings.Contains(string(out), "voltron version: development, SHA: gitHash") {
-		t.Fatalf("expected \"%s\" got \"%s\"", "voltron version: development, SHA: gitHash", string(out))
+	if !strings.Contains(string(out), "voltron version: dev, SHA: dev") {
+		t.Fatalf("expected \"%s\" got \"%s\"", "voltron version: dev, SHA: dev", string(out))
 	}
 }

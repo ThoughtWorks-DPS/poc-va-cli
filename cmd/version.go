@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
+	"voltron/clients"
 )
 
 func init() {
@@ -14,14 +15,25 @@ func versionCmd() *cobra.Command {
   	Use: "version",
   	Short: "Current version of Voltron and API",
   	Run: func(cmd *cobra.Command, args []string) {
-		printVersion()
+		printVersions()
 	},
   }
 }
 
-var Version = "development"
-var Commit = "gitHash"
+var Version = "dev"
+var Commit = "dev"
 
-func printVersion() {
+func printVersions() {
+	printCliVersion()
+	printApiVersion()
+}
+
+func printCliVersion() {
 	fmt.Printf("voltron version: %s, SHA: %s\n", Version, Commit)
+}
+
+func printApiVersion() {
+	client := clients.NewApiClient()
+	info := client.GetApiInfo()
+	fmt.Println(info)
 }
