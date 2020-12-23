@@ -6,14 +6,14 @@ import (
 	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
-	"voltron/clients"
+	"voltron/mocks"
 )
 
 func TestDoHello(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mockedApiClient := clients.NewMockApiClient(ctrl)
+	mockedApiClient := mocks.NewMockApiClient(ctrl)
 	mockedApiClient.EXPECT().
 		GetHello().
 		Return("Hello from the API!")

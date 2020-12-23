@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
-	"voltron/clients"
+	"voltron/mocks"
 )
 
 func ExampleTestPrintCliVersion() {
@@ -20,7 +20,7 @@ func TestGetApiVersion(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mockedApiClient := clients.NewMockApiClient(ctrl)
+	mockedApiClient := mocks.NewMockApiClient(ctrl)
 	mockedApiClient.EXPECT().
 		GetApiInfo().
 		Return("API version: x.x.x, SHA: a1b2c34d,")

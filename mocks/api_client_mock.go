@@ -2,7 +2,7 @@
 // Source: ./clients/api_client.go
 
 // Package clients is a generated GoMock package.
-package clients
+package mocks
 
 import (
 	gomock "github.com/golang/mock/gomock"
