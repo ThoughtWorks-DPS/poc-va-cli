@@ -25,6 +25,11 @@ func TestGetHelloSuccessfulCall(t *testing.T) {
 	assert.Equal(t, "Hello from the API!", client.GetHello())
 }
 
+func TestGetHelloWithoutUrl(t *testing.T) {
+	client := NewApiClient()
+	assert.Equal(t, "Invalid url.", client.GetHello())
+}
+
 func TestGetHelloFailedCall(t *testing.T) {
 	client := NewApiClient()
 	var apiStub = httptest.NewServer(http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
@@ -63,6 +68,11 @@ func TestGetApiInfoFailedCall(t *testing.T) {
 	client.URL = apiStub.URL
 
 	assert.Equal(t, "Error: API Service Returned 500 Internal Server Error", client.GetApiInfo())
+}
+
+func TestGetApiInfoWithoutUrl(t *testing.T) {
+	client := NewApiClient()
+	assert.Equal(t, "Invalid url.", client.GetApiInfo())
 }
 
 func TestSetDefaultApiUrl(t *testing.T) {
