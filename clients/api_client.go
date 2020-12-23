@@ -10,6 +10,7 @@ import (
 
 type ApiClient interface {
 	GetHello() string
+	GetApiInfo() string
 }
 
 type ApiClientImpl struct {

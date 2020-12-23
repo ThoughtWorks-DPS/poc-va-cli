@@ -15,7 +15,9 @@ func versionCmd() *cobra.Command {
   	Use: "version",
   	Short: "Current version of Voltron and API",
   	Run: func(cmd *cobra.Command, args []string) {
-		printVersions()
+		client := clients.NewApiClient()
+		printCliVersion()
+		fmt.Println(getApiVersion(client))
 	},
   }
 }
@@ -23,17 +25,10 @@ func versionCmd() *cobra.Command {
 var Version = "dev"
 var Commit = "dev"
 
-func printVersions() {
-	printCliVersion()
-	printApiVersion()
-}
-
 func printCliVersion() {
 	fmt.Printf("voltron version: %s, SHA: %s\n", Version, Commit)
 }
 
-func printApiVersion() {
-	client := clients.NewApiClient()
-	info := client.GetApiInfo()
-	fmt.Println(info)
+func getApiVersion(client clients.ApiClient) string {
+	return client.GetApiInfo()
 }

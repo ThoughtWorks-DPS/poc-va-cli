@@ -45,3 +45,17 @@ func (mr *MockApiClientMockRecorder) GetHello() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetHello", reflect.TypeOf((*MockApiClient)(nil).GetHello))
 }
+
+// GetApiInfo mocks base method
+func (m *MockApiClient) GetApiInfo() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetApiInfo")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// GetApiInfo indicates an expected call of GetApiInfo
+func (mr *MockApiClientMockRecorder) GetApiInfo() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetApiInfo", reflect.TypeOf((*MockApiClient)(nil).GetApiInfo))
+}
