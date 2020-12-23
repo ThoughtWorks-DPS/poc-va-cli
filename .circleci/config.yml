@@ -76,7 +76,8 @@ jobs:
       - secrethub/exec:
           command: |
             ./cc-test-reporter before-build
-            go test -v ./... -coverprofile=c.out
+            go test -v ./... -coverprofile=cover.out
+            ./ccThresholdCheck.sh
       - secrethub/exec:
           command: |
             ./cc-test-reporter after-build upload-coverage -t gocov -p voltron --exit-code $?
