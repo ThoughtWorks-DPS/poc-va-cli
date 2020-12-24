@@ -16,7 +16,7 @@ func TestDoHello(t *testing.T) {
 	mockedApiClient := mocks.NewMockApiClient(ctrl)
 	mockedApiClient.EXPECT().
 		GetHello().
-		Return("Hello from the AP!")
+		Return("Hello from the API!")
 
 	assert.Equal(t, "Hello from the API!", doHello(mockedApiClient))
 }
