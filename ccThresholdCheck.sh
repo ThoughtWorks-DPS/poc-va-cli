@@ -2,7 +2,7 @@
 set -e
 
 FILE=./c.out
-THRESHOLD=90.0
+THRESHOLD=80.0
 
 if test -f "$FILE"; then
     COVERAGE=$(go tool cover -func c.out | grep total | awk '{print substr($3, 1, length($3)-1)}')
