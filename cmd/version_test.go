@@ -2,18 +2,29 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/golang/mock/gomock"
-	"github.com/kami-zh/go-capturer"
-	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
 	"voltron/mocks"
+
+	"github.com/golang/mock/gomock"
+	"github.com/kami-zh/go-capturer"
+	"github.com/stretchr/testify/assert"
 )
 
-func ExampleTestPrintCliVersion() {
+func ExampleTestPrintCliDefaultVersion() {
 	printCliVersion()
 	//Output:
 	//voltron version: dev, SHA: dev
+}
+
+func TestShortenCommitHashGreaterThan7(t *testing.T) {
+	hash := "12345678"
+	assert.Equal(t, "1234567", shortenCommitHash(hash))
+}
+
+func TestShortenCommitHashLessThan7(t *testing.T) {
+	hash := "123456"
+	assert.Equal(t, "123456", shortenCommitHash(hash))
 }
 
 func TestGetApiVersion(t *testing.T) {
