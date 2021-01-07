@@ -2,10 +2,11 @@ package clients
 
 import (
 	"encoding/json"
-	"github.com/spf13/viper"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/spf13/viper"
 )
 
 type ApiClient interface {
@@ -20,7 +21,7 @@ type ApiClientImpl struct {
 type ApiInfo struct {
 	Application struct {
 		SemVersion string `json:"SemVersion"`
-		GitHash string `json:"GitHash"`
+		GitHash    string `json:"GitHash"`
 	} `json:"application"`
 }
 
@@ -65,7 +66,7 @@ func (client ApiClientImpl) GetApiInfo() string {
 			log.Fatal(err)
 		}
 
-		return "API version: " + info.Application.SemVersion + ", SHA: " + info.Application.GitHash + ", via: " + infoEndPoint
+		return "API version: " + info.Application.SemVersion + ", SHA: " + info.Application.GitHash + ", Base URL: " + client.URL
 	}
 
 	return "Error: API Service Returned " + res.Status

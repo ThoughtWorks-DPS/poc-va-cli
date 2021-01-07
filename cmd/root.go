@@ -17,8 +17,9 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"os"
+
+	"github.com/spf13/cobra"
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
@@ -80,7 +81,7 @@ func initConfig() {
 		// Search config in home directory with name ".api_config.yml" (without extension).
 		viper.AddConfigPath(home)
 		viper.SetConfigName(".api_config.yml")
-		viper.SetDefault("api_service_base_url", "http://api.devportal.name")
+		viper.SetDefault("api_service_base_url", "https://api.devportal.name")
 		viper.WriteConfigAs(".api_config.yml")
 	}
 

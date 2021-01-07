@@ -2,11 +2,12 @@ package clients
 
 import (
 	"fmt"
-	"github.com/spf13/viper"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"os"
+
+	"github.com/spf13/viper"
+	"github.com/stretchr/testify/assert"
 
 	"testing"
 )
@@ -56,7 +57,7 @@ func TestGetApiInfoSuccessfulCall(t *testing.T) {
 	result := client.GetApiInfo()
 
 	assert.Contains(t, result, "API version: x.x.x, SHA: a1b2c34d,")
-	assert.Contains(t, result, "/teams/info")
+	assert.Contains(t, result, "Base URL")
 }
 
 func TestGetApiInfoFailedCall(t *testing.T) {
@@ -78,7 +79,7 @@ func TestGetApiInfoWithoutUrl(t *testing.T) {
 func TestSetDefaultApiUrl(t *testing.T) {
 	loadViperConfig()
 	client := NewApiClient()
-	assert.Equal(t, "http://api.devportal.name", client.URL )
+	assert.Equal(t, "https://api.devportal.name", client.URL)
 }
 
 func TestOverrideDefaultApiUrl(t *testing.T) {
