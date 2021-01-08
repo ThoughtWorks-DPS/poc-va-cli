@@ -82,6 +82,14 @@ func TestSetDefaultApiUrl(t *testing.T) {
 	assert.Equal(t, "https://api.devportal.name", client.URL)
 }
 
+func TestOverrideDefaultApiUrl(t *testing.T) {
+	loadViperConfig()
+	os.Setenv("API_SERVICE_BASE_URL", "http://localhost:5000")
+	client := NewApiClient()
+
+	assert.Equal(t, "http://localhost:5000", client.URL)
+}
+
 func loadViperConfig() {
 	viper.AddConfigPath("..")
 	viper.SetConfigName(".api_config")
