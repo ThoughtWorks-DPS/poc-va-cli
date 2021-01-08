@@ -21,7 +21,6 @@ import (
 
 	"github.com/spf13/cobra"
 
-	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
 )
 
@@ -67,28 +66,26 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	if cfgFile != "" {
-		// Use config file from the flag.
-		viper.SetConfigFile(cfgFile)
-	} else {
-		// Find home directory.
-		home, err := homedir.Dir()
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
+	//Supports manually adding configs files via command flags
 
-		// Search config in home directory with name ".api_config.yml" (without extension).
-		viper.AddConfigPath(home)
-		viper.SetConfigName(".api_config.yml")
-		viper.SetDefault("api_service_base_url", "https://api.devportal.name")
-		viper.WriteConfigAs(".api_config.yml")
+	//if cfgFile != "" {
+	//	// Use config file from the flag.
+	//	viper.SetConfigFile(cfgFile)
+	//} else {
+	//}
+
+	viper.SetConfigName(".api_config")
+	viper.SetConfigType("yml")
+	viper.AddConfigPath(".")
+	viper.AutomaticEnv()
+
+	viper.SetDefault("api_service_base_url", "https://api.devportal.name")
+	viper.SafeWriteConfigAs(".api_config.yml")
+
+	err := viper.ReadInConfig()
+	if err != nil {
+		fmt.Println("fatal error config file: .api_config.yml \n", err)
+		os.Exit(1)
 	}
 
-	viper.AutomaticEnv() // read in environment variables that match
-
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
-	}
 }
