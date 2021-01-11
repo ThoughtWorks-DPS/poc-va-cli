@@ -39,6 +39,8 @@ func TestGetApiVersion(t *testing.T) {
 	assert.Equal(t, "API version: x.x.x, SHA: a1b2c34d,", getApiVersion(mockedApiClient))
 }
 
+// This test needs to be refactored to not use the deployed version of the app, in the current state this test
+// generates a .api_config.yml under cmd.
 func TestVersionCmdIntegration(t *testing.T) {
 	cmd := versionCmd()
 	out := capturer.CaptureStdout(func() {

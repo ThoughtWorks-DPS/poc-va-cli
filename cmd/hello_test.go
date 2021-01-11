@@ -21,6 +21,8 @@ func TestDoHello(t *testing.T) {
 	assert.Equal(t, "Hello from the API!", doHello(mockedApiClient))
 }
 
+// This test needs to be refactored to not use the deployed version of the app, in the current state this test
+// generates a .api_config.yml under cmd.
 func Test_ExecuteHelloCommand(t *testing.T) {
 	cmd := helloCmd()
 	out := capturer.CaptureStdout(func() {
