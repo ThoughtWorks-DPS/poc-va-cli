@@ -22,3 +22,23 @@
 Install goreleaser
 > brew install goreleaser
 
+## Available Voltron commands
+
+```
+Usage:
+  voltron [command]
+
+Available Commands:
+  hello       Call hello endpoints in API
+  help        Help about any command
+  version     Current version of Voltron and API
+
+Flags:
+      --config string   config file (default is voltron/.api_config.yaml)
+  -h, --help            help for voltron
+  -t, --toggle          Help message for toggle
+
+Use "voltron [command] --help" for more information about a command.
+```
+
+
