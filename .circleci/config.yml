@@ -107,11 +107,9 @@ workflows:
   version: 2
   main:
     jobs:
-#      - check-for-secrets:
-#          context: dps-va-di
+      - check-for-secrets:
 #      - build
       - unit-test:
-          context: dps-va-di
 #      - hold:
 #          type: approval
 #          requires:
