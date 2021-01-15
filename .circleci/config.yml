@@ -107,7 +107,7 @@ workflows:
   version: 2
   main:
     jobs:
-      - check-for-secrets:
+      - check-for-secrets
 #      - build
       - unit-test:
 #      - hold:
