@@ -62,8 +62,6 @@ jobs:
 
   unit-test:
     executor: go-agent
-    environment:
-      CC_TEST_REPORTER_ID: chamber read lhdi/platform/code-climate cli_reporter_id
     steps:
       - checkout
       - run:
@@ -73,7 +71,6 @@ jobs:
             sudo mv chamber-v2.9.1-linux-amd64 /usr/local/bin/chamber
             sudo chmod +x /usr/local/bin/chamber
             chamber version
-            chamber list lhdi/platform/dockerhub
       - run:
           name: Setup Code Climate test-reporter
           command: |
@@ -87,7 +84,7 @@ jobs:
             ./ccThresholdCheck.sh
       - run:
             command: |
-              ./cc-test-reporter after-build upload-coverage -t gocov -p voltron --exit-code $?
+              chamber exec lhdi/platform/code-climate -- ./cc-test-reporter after-build upload-coverage -t gocov -p voltron --exit-code $?
 
   build:
     executor: go-agent
