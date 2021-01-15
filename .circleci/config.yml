@@ -109,7 +109,7 @@ workflows:
     jobs:
       - check-for-secrets
 #      - build
-      - unit-test:
+      - unit-test
 #      - hold:
 #          type: approval
 #          requires:
