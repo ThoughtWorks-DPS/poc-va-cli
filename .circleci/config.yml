@@ -1,7 +1,6 @@
 version: 2.1
 
 orbs:
-  secrethub: secrethub/cli@1.0.0
   win: circleci/windows@2.2.0
   git-tag: twdps/git-tag-orb@0.1.0
 
@@ -63,24 +62,32 @@ jobs:
 
   unit-test:
     executor: go-agent
-    environment:
-      CC_TEST_REPORTER_ID: secrethub://vapoc/platform/svc/code-climate/poc-va-cli-reporter-id
+#    environment:
+#      CC_TEST_REPORTER_ID: secrethub://vapoc/platform/svc/code-climate/poc-va-cli-reporter-id
     steps:
       - checkout
       - run:
-          name: Setup Code Climate test-reporter
+          name: install chamber
           command: |
-            # download test reporter as a static binary
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
-      - secrethub/exec:
-          command: |
-            ./cc-test-reporter before-build
-            go test -v ./... -coverprofile=c.out
-            ./ccThresholdCheck.sh
-      - secrethub/exec:
-            command: |
-              ./cc-test-reporter after-build upload-coverage -t gocov -p voltron --exit-code $?
+            curl -LOs https://github.com/segmentio/chamber/releases/download/v2.9.1/chamber-v2.9.1-linux-amd64
+            sudo mv chamber-v2.9.1-linux-amd64 /usr/local/bin/chamber
+            sudo chmod +x /usr/local/bin/chamber
+            chamber version
+            chamber list lhdi/platform/dockerhub
+#      - run:
+#          name: Setup Code Climate test-reporter
+#          command: |
+#            # download test reporter as a static binary
+#            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+#            chmod +x ./cc-test-reporter
+#      - run:
+#          command: |
+#            ./cc-test-reporter before-build
+#            go test -v ./... -coverprofile=c.out
+#            ./ccThresholdCheck.sh
+#      - run:
+#            command: |
+#              ./cc-test-reporter after-build upload-coverage -t gocov -p voltron --exit-code $?
 
   build:
     executor: go-agent
@@ -102,81 +109,81 @@ workflows:
   version: 2
   main:
     jobs:
-      - check-for-secrets:
-          context: dps-va-di
-      - build
+#      - check-for-secrets:
+#          context: dps-va-di
+#      - build
       - unit-test:
           context: dps-va-di
-      - hold:
-          type: approval
-          requires:
-            - check-for-secrets
-            - build
-            - unit-test
-      - approve-patch-tag:
-          type: approval
-          requires:
-            - hold
-      - approve-minor-tag:
-          type: approval
-          requires:
-            - hold
-          post-steps:
-      - approve-major-tag:
-          type: approval
-          requires:
-            - hold
-      - git-tag/apply:
-          name: apply git patch
-          semantic-version: patch
-          fingerprint: $SVC_FINGERPRINT
-          context: dps-va-di
-          requires:
-            - approve-patch-tag
-      - git-tag/apply:
-          name: apply git minor
-          semantic-version: minor
-          fingerprint: $SVC_FINGERPRINT
-          context: dps-va-di
-          requires:
-            - approve-minor-tag
-      - git-tag/apply:
-          name: apply git major
-          semantic-version: major
-          fingerprint: $SVC_FINGERPRINT
-          context: dps-va-di
-          requires:
-            - approve-major-tag
-      - release:
-          context: dps-va-di
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /[0-9]+(\.[0-9]+)*(-.*)*/
-      - smoke-test-linux:
-          requires:
-            - release
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /[0-9]+(\.[0-9]+)*(-.*)*/
-      - smoke-test-macos:
-          requires:
-            - release
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /[0-9]+(\.[0-9]+)*(-.*)*/
-  weekly:
-    triggers:
-      - schedule:
-          cron: "0 0 * * 5"
-          filters:
-            branches:
-              only:
-                - main
-    jobs:
-      - smoke-test-win
+#      - hold:
+#          type: approval
+#          requires:
+#            - check-for-secrets
+#            - build
+#            - unit-test
+#      - approve-patch-tag:
+#          type: approval
+#          requires:
+#            - hold
+#      - approve-minor-tag:
+#          type: approval
+#          requires:
+#            - hold
+#          post-steps:
+#      - approve-major-tag:
+#          type: approval
+#          requires:
+#            - hold
+#      - git-tag/apply:
+#          name: apply git patch
+#          semantic-version: patch
+#          fingerprint: $SVC_FINGERPRINT
+#          context: dps-va-di
+#          requires:
+#            - approve-patch-tag
+#      - git-tag/apply:
+#          name: apply git minor
+#          semantic-version: minor
+#          fingerprint: $SVC_FINGERPRINT
+#          context: dps-va-di
+#          requires:
+#            - approve-minor-tag
+#      - git-tag/apply:
+#          name: apply git major
+#          semantic-version: major
+#          fingerprint: $SVC_FINGERPRINT
+#          context: dps-va-di
+#          requires:
+#            - approve-major-tag
+#      - release:
+#          context: dps-va-di
+#          filters:
+#            branches:
+#              ignore: /.*/
+#            tags:
+#              only: /[0-9]+(\.[0-9]+)*(-.*)*/
+#      - smoke-test-linux:
+#          requires:
+#            - release
+#          filters:
+#            branches:
+#              ignore: /.*/
+#            tags:
+#              only: /[0-9]+(\.[0-9]+)*(-.*)*/
+#      - smoke-test-macos:
+#          requires:
+#            - release
+#          filters:
+#            branches:
+#              ignore: /.*/
+#            tags:
+#              only: /[0-9]+(\.[0-9]+)*(-.*)*/
+#  weekly:
+#    triggers:
+#      - schedule:
+#          cron: "0 0 * * 5"
+#          filters:
+#            branches:
+#              only:
+#                - main
+#    jobs:
+#      - smoke-test-win
