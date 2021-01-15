@@ -84,7 +84,7 @@ jobs:
             ./ccThresholdCheck.sh
       - run:
             command: |
-              chamber exec lhdi/platform/code-climate -- ./cc-test-reporter after-build upload-coverage -t gocov -p voltron --exit-code $?
+              chamber exec lhdi/platform/code-climate -- ./cc-test-reporter after-build upload-coverage -r CC_TEST_REPORTER_ID $-t gocov -p voltron --exit-code $?
 
   build:
     executor: go-agent
