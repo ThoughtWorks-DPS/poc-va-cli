@@ -101,7 +101,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /usr/local/bin/chamber
+          at: /usr/local/bin
       - run:
           command: chamber version
 
