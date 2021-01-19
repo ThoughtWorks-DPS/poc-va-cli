@@ -86,6 +86,9 @@ jobs:
             command: |
               export CC_TEST_REPORTER_ID=$(chamber read lhdi/platform/code-climate/cli cc_test_reporter_id -q)
               ./cc-test-reporter after-build upload-coverage -t gocov -p voltron --exit-code $?
+      - persist_to_workspace:
+          root: /usr/local
+          paths: bin/chamber
 
   build:
     executor: go-agent
@@ -93,15 +96,26 @@ jobs:
       - checkout
       - run: go run main.go
 
-  release:
+  foo:
     executor: go-agent
-    environment:
-      GITHUB_TOKEN: secrethub://vapoc/platform/svc/github/access-token
     steps:
       - checkout
-      - secrethub/exec:
-          step-name: Publish Release
-          command: curl -sL https://git.io/goreleaser | bash
+      - attach_workspace:
+          at: /usr/local/bin/chamber
+      - run:
+          command: chamber version
+
+  release:
+    executor: go-agent
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /usr/local/bin/chamber
+      - run:
+          command: chamber version
+#      - run:
+#          name: Publish Release
+#          command: curl -sL https://git.io/goreleaser | bash
 
 workflows:
   version: 2
@@ -110,6 +124,9 @@ workflows:
       - check-for-secrets
 #      - build
       - unit-test
+      - foo:
+          requires:
+            - unit-test
 #      - hold:
 #          type: approval
 #          requires:
@@ -151,7 +168,6 @@ workflows:
 #          requires:
 #            - approve-major-tag
 #      - release:
-#          context: dps-va-di
 #          filters:
 #            branches:
 #              ignore: /.*/
