@@ -111,92 +111,92 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /usr/local/bin/chamber
+          at: /tmp
       - run:
-          command: chamber version
-#      - run:
-#          name: Publish Release
-#          command: curl -sL https://git.io/goreleaser | bash
+          name: Publish Release
+          command: |
+            export GITHUB_TOKEN=$(/tmp/app/chamber read lhdi/platform/github access_token -q)
+            curl -sL https://git.io/goreleaser | bash
 
 workflows:
   version: 2
   main:
     jobs:
       - check-for-secrets
-#      - build
+      - build
       - unit-test
       - foo:
           requires:
             - unit-test
-#      - hold:
-#          type: approval
-#          requires:
-#            - check-for-secrets
-#            - build
-#            - unit-test
-#      - approve-patch-tag:
-#          type: approval
-#          requires:
-#            - hold
-#      - approve-minor-tag:
-#          type: approval
-#          requires:
-#            - hold
-#          post-steps:
-#      - approve-major-tag:
-#          type: approval
-#          requires:
-#            - hold
-#      - git-tag/apply:
-#          name: apply git patch
-#          semantic-version: patch
-#          fingerprint: $SVC_FINGERPRINT
-#          context: dps-va-di
-#          requires:
-#            - approve-patch-tag
-#      - git-tag/apply:
-#          name: apply git minor
-#          semantic-version: minor
-#          fingerprint: $SVC_FINGERPRINT
-#          context: dps-va-di
-#          requires:
-#            - approve-minor-tag
-#      - git-tag/apply:
-#          name: apply git major
-#          semantic-version: major
-#          fingerprint: $SVC_FINGERPRINT
-#          context: dps-va-di
-#          requires:
-#            - approve-major-tag
-#      - release:
-#          filters:
-#            branches:
-#              ignore: /.*/
-#            tags:
-#              only: /[0-9]+(\.[0-9]+)*(-.*)*/
-#      - smoke-test-linux:
-#          requires:
-#            - release
-#          filters:
-#            branches:
-#              ignore: /.*/
-#            tags:
-#              only: /[0-9]+(\.[0-9]+)*(-.*)*/
-#      - smoke-test-macos:
-#          requires:
-#            - release
-#          filters:
-#            branches:
-#              ignore: /.*/
-#            tags:
-#              only: /[0-9]+(\.[0-9]+)*(-.*)*/
-#  weekly:
-#    triggers:
-#      - schedule:
-#          cron: "0 0 * * 5"
-#          filters:
-#            branches:
-#              only:
-#                - main
-#    jobs:
-#      - smoke-test-win
+      - hold:
+          type: approval
+          requires:
+            - check-for-secrets
+            - build
+            - unit-test
+      - approve-patch-tag:
+          type: approval
+          requires:
+            - hold
+      - approve-minor-tag:
+          type: approval
+          requires:
+            - hold
+          post-steps:
+      - approve-major-tag:
+          type: approval
+          requires:
+            - hold
+      - git-tag/apply:
+          name: apply git patch
+          semantic-version: patch
+          fingerprint: $SVC_FINGERPRINT
+          context: dps-va-di
+          requires:
+            - approve-patch-tag
+      - git-tag/apply:
+          name: apply git minor
+          semantic-version: minor
+          fingerprint: $SVC_FINGERPRINT
+          context: dps-va-di
+          requires:
+            - approve-minor-tag
+      - git-tag/apply:
+          name: apply git major
+          semantic-version: major
+          fingerprint: $SVC_FINGERPRINT
+          context: dps-va-di
+          requires:
+            - approve-major-tag
+      - release:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /[0-9]+(\.[0-9]+)*(-.*)*/
+      - smoke-test-linux:
+          requires:
+            - release
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /[0-9]+(\.[0-9]+)*(-.*)*/
+      - smoke-test-macos:
+          requires:
+            - release
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /[0-9]+(\.[0-9]+)*(-.*)*/
+  weekly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * 5"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - smoke-test-win
