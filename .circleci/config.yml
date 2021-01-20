@@ -97,15 +97,6 @@ jobs:
       - checkout
       - run: go run main.go
 
-  foo:
-    executor: go-agent
-    steps:
-      - checkout
-      - attach_workspace:
-          at: /tmp
-      - run:
-          command: /tmp/app/chamber version
-
   release:
     executor: go-agent
     steps:
@@ -125,9 +116,6 @@ workflows:
       - check-for-secrets
       - build
       - unit-test
-      - foo:
-          requires:
-            - unit-test
       - hold:
           type: approval
           requires:
