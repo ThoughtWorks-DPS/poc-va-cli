@@ -68,9 +68,10 @@ jobs:
           name: install chamber
           command: |
             curl -LOs https://github.com/segmentio/chamber/releases/download/v2.9.1/chamber-v2.9.1-linux-amd64
-            sudo mv chamber-v2.9.1-linux-amd64 /tmp/app
-            sudo chmod +x ./tmp/app/chamber
-            ./tmp/app/chamber version
+            mkdir /tmp/app
+            sudo mv chamber-v2.9.1-linux-amd64 /tmp/app/chamber
+            sudo chmod +x /tmp/app/chamber
+            /tmp/app/chamber version
       - run:
           name: Setup Code Climate test-reporter
           command: |
@@ -84,7 +85,7 @@ jobs:
             ./ccThresholdCheck.sh
       - run:
             command: |
-              export CC_TEST_REPORTER_ID=$(./tmp/app/chamber read lhdi/platform/code-climate/cli cc_test_reporter_id -q)
+              export CC_TEST_REPORTER_ID=$(/tmp/app/chamber read lhdi/platform/code-climate/cli cc_test_reporter_id -q)
               ./cc-test-reporter after-build upload-coverage -t gocov -p voltron --exit-code $?
       - persist_to_workspace:
           root: /tmp
@@ -103,7 +104,7 @@ jobs:
       - attach_workspace:
           at: /tmp
       - run:
-          command: ./tmp/app/chamber version
+          command: /tmp/app/chamber version
 
   release:
     executor: go-agent
