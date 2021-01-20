@@ -68,10 +68,9 @@ jobs:
           name: install chamber
           command: |
             curl -LOs https://github.com/segmentio/chamber/releases/download/v2.9.1/chamber-v2.9.1-linux-amd64
-            mkdir /tmp/app
-            sudo mv chamber-v2.9.1-linux-amd64 /tmp/app/chamber
-            sudo chmod +x /tmp/app/chamber
-            /tmp/app/chamber version
+            sudo mv chamber-v2.9.1-linux-amd64 /usr/local/bin/chamber
+            sudo chmod +x /usr/local/bin/chamber
+            chamber version
       - run:
           name: Setup Code Climate test-reporter
           command: |
@@ -85,11 +84,8 @@ jobs:
             ./ccThresholdCheck.sh
       - run:
             command: |
-              export CC_TEST_REPORTER_ID=$(/tmp/app/chamber read lhdi/platform/code-climate/cli cc_test_reporter_id -q)
+              export CC_TEST_REPORTER_ID=$(chamber read lhdi/platform/code-climate/cli cc_test_reporter_id -q)
               ./cc-test-reporter after-build upload-coverage -t gocov -p voltron --exit-code $?
-      - persist_to_workspace:
-          root: /tmp
-          paths: app/chamber
 
   build:
     executor: go-agent
@@ -101,12 +97,17 @@ jobs:
     executor: go-agent
     steps:
       - checkout
-      - attach_workspace:
-          at: /tmp
+      - run:
+          name: install chamber
+          command: |
+            curl -LOs https://github.com/segmentio/chamber/releases/download/v2.9.1/chamber-v2.9.1-linux-amd64
+            sudo mv chamber-v2.9.1-linux-amd64 /usr/local/bin/chamber
+            sudo chmod +x /usr/local/bin/chamber
+            chamber version
       - run:
           name: Publish Release
           command: |
-            export GITHUB_TOKEN=$(/tmp/app/chamber read lhdi/platform/github access_token -q)
+            export GITHUB_TOKEN=$(chamber read lhdi/platform/github access_token -q)
             curl -sL https://git.io/goreleaser | bash
 
 workflows:
