@@ -1,5 +1,6 @@
 # POC-VA-CLI for delivery infrastructure
 [![Maintainability](https://api.codeclimate.com/v1/badges/043b7771faf510da9b7a/maintainability)](https://codeclimate.com/github/ThoughtWorks-DPS/poc-va-cli/maintainability)
+
 [![Test Coverage](https://api.codeclimate.com/v1/badges/043b7771faf510da9b7a/test_coverage)](https://codeclimate.com/github/ThoughtWorks-DPS/poc-va-cli/test_coverage)
 ## Local Environment Setup
 1. Install pre-commit
