@@ -67,7 +67,7 @@ jobs:
       - run:
           name: install chamber
           command: |
-            curl -LOs https://github.com/ThoughtWorks-DPS/poc-resources/blob/main/pipeline_helpers/install_chamber.sh | sh
+            curl -LOs https://raw.githubusercontent.com/ThoughtWorks-DPS/poc-resources/main/pipeline_helpers/install_chamber.sh | sh
       - run:
           name: Setup Code Climate test-reporter
           command: |
@@ -96,7 +96,7 @@ jobs:
       - run:
           name: install chamber
           command: |
-            curl -LOs https://github.com/ThoughtWorks-DPS/poc-resources/blob/main/pipeline_helpers/install_chamber.sh | sh
+            curl -LOs https://raw.githubusercontent.com/ThoughtWorks-DPS/poc-resources/main/pipeline_helpers/install_chamber.sh | sh
       - run:
           name: Publish Release
           command: |
