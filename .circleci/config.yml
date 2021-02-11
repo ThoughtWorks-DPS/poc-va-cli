@@ -67,10 +67,7 @@ jobs:
       - run:
           name: install chamber
           command: |
-            curl -LOs https://github.com/segmentio/chamber/releases/download/v2.9.1/chamber-v2.9.1-linux-amd64
-            sudo mv chamber-v2.9.1-linux-amd64 /usr/local/bin/chamber
-            sudo chmod +x /usr/local/bin/chamber
-            chamber version
+            curl -LOs https://github.com/ThoughtWorks-DPS/poc-resources/blob/main/pipeline_helpers/install_chamber.sh | sh
       - run:
           name: Setup Code Climate test-reporter
           command: |
@@ -99,10 +96,7 @@ jobs:
       - run:
           name: install chamber
           command: |
-            curl -LOs https://github.com/segmentio/chamber/releases/download/v2.9.1/chamber-v2.9.1-linux-amd64
-            sudo mv chamber-v2.9.1-linux-amd64 /usr/local/bin/chamber
-            sudo chmod +x /usr/local/bin/chamber
-            chamber version
+            curl -LOs https://github.com/ThoughtWorks-DPS/poc-resources/blob/main/pipeline_helpers/install_chamber.sh | sh
       - run:
           name: Publish Release
           command: |
