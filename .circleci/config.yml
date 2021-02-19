@@ -88,7 +88,6 @@ jobs:
     steps:
       - checkout
       - run: go run main.go
-
   release:
     executor: go-agent
     steps:
@@ -109,7 +108,8 @@ workflows:
     jobs:
       - check-for-secrets
       - build
-      - unit-test
+      - unit-test:
+        context: dps-va-di
       - hold:
           type: approval
           requires:
