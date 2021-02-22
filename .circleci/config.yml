@@ -82,9 +82,10 @@ jobs:
             go test -v ./... -coverprofile=c.out
             ./ccThresholdCheck.sh
       - run:
+            name: Publish codeclimate report
             command: |
               sudo apt-get update
-              sudo apt-get install aws
+              sudo apt-get install awscli
               curl -sL https://raw.githubusercontent.com/ThoughtWorks-DPS/poc-resources/main/pipeline_helpers/assume_role.sh | bash arn:aws:iam::$AWS_ACCOUNT_ID:role/DPSReadOnlyRole poc-va-session
               chamber exec lhdi/platform/code-climate/cli -- ./cc-test-reporter after-build upload-coverage -t gocov -p voltron --exit-code $?
 
