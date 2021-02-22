@@ -41,5 +41,3 @@ Flags:
 
 Use "voltron [command] --help" for more information about a command.
 ```
-
-
