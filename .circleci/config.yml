@@ -85,7 +85,7 @@ jobs:
             name: Publish codeclimate report
             command: |
               sudo apt-get update && sudo apt-get install awscli
-              curl -sL https://raw.githubusercontent.com/ThoughtWorks-DPS/poc-resources/main/pipeline_helpers/assume_role.sh > assume_role.sh
+              curl -LOs https://raw.githubusercontent.com/ThoughtWorks-DPS/poc-resources/main/pipeline_helpers/assume_role.sh
               source assume_role.sh "DPSReadOnlyRole" "poc-va-session"
               chamber exec lhdi/platform/code-climate/cli -- ./cc-test-reporter after-build upload-coverage -t gocov -p voltron --exit-code $?
 
