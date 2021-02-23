@@ -86,7 +86,7 @@ jobs:
       - run:
             name: assume role and publish report to codeclimate
             command: |
-              curl -sL https://raw.githubusercontent.com/ThoughtWorks-DPS/poc-resources/main/pipeline_helpers/assume_role.sh > assume_role.sh
+              curl -LOs https://raw.githubusercontent.com/ThoughtWorks-DPS/poc-resources/main/pipeline_helpers/assume_role.sh
               source assume_role.sh "DPSReadOnlyRole" "poc-va-session"
               chamber exec lhdi/platform/code-climate/cli -- ./cc-test-reporter after-build upload-coverage -t gocov -p voltron --exit-code $?
 
