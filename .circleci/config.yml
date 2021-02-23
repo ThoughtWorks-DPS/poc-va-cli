@@ -67,26 +67,30 @@ jobs:
     steps:
       - checkout
       - run:
-          name: install chamber
+          name: install chamber and awscli
           command: |
             curl -sL https://raw.githubusercontent.com/ThoughtWorks-DPS/poc-resources/main/pipeline_helpers/install_chamber.sh | bash
+            sudo apt-get update && sudo apt-get install awscli
       - run:
-          name: Setup Code Climate test-reporter
+          name: setup code climate test-reporter
           command: |
             # download test reporter as a static binary
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
       - run:
+          name: run test and code coverage
           command: |
             ./cc-test-reporter before-build
             go test -v ./... -coverprofile=c.out
             ./ccThresholdCheck.sh
       - run:
-            name: Publish codeclimate report
-            command: |
-              sudo apt-get update && sudo apt-get install awscli
-              curl -LOs https://raw.githubusercontent.com/ThoughtWorks-DPS/poc-resources/main/pipeline_helpers/assume_role.sh
+          name: assume role for chamber
+          command: |
+              curl -sL https://raw.githubusercontent.com/ThoughtWorks-DPS/poc-resources/main/pipeline_helpers/assume_role.sh > assume_role.sh
               source assume_role.sh "DPSReadOnlyRole" "poc-va-session"
+      - run:
+            name: publish report to codeclimate
+            command: |
               chamber exec lhdi/platform/code-climate/cli -- ./cc-test-reporter after-build upload-coverage -t gocov -p voltron --exit-code $?
 
   build:
