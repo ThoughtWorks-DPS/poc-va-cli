@@ -84,13 +84,10 @@ jobs:
             go test -v ./... -coverprofile=c.out
             ./ccThresholdCheck.sh
       - run:
-          name: assume role for chamber
-          command: |
+            name: assume role and publish report to codeclimate
+            command: |
               curl -sL https://raw.githubusercontent.com/ThoughtWorks-DPS/poc-resources/main/pipeline_helpers/assume_role.sh > assume_role.sh
               source assume_role.sh "DPSReadOnlyRole" "poc-va-session"
-      - run:
-            name: publish report to codeclimate
-            command: |
               chamber exec lhdi/platform/code-climate/cli -- ./cc-test-reporter after-build upload-coverage -t gocov -p voltron --exit-code $?
 
   build:
